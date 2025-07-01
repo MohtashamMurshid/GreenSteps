@@ -1,22 +1,48 @@
 import { Image } from "expo-image";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+import Badge from "@/components/Badge";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-
-// This is a placeholder for the real hook.
-const usePedometer = () => ({
-  currentStepCount: 5432,
-  isPedometerAvailable: true,
-});
-
-// This is a placeholder for the real goal.
-const dailyGoal = 10000;
+import { usePedometer } from "@/hooks/usePedometer";
+import {
+  Badge as BadgeType,
+  checkAndAwardBadges,
+  getBadgesStatus,
+} from "@/lib/gamification";
+import { getStepGoal } from "@/lib/storage";
 
 export default function HomeScreen() {
-  const { currentStepCount } = usePedometer();
-  const progress = dailyGoal > 0 ? currentStepCount / dailyGoal : 0;
+  const { currentStepCount, isPedometerAvailable } = usePedometer();
+  const [dailyGoal, setDailyGoal] = useState(10000);
+  const [badges, setBadges] = useState<BadgeType[]>([]);
+
+  const progress =
+    dailyGoal > 0 ? Math.min(currentStepCount / dailyGoal, 1) : 0;
+
+  useEffect(() => {
+    // Load daily goal from storage
+    const loadGoal = async () => {
+      const savedGoal = await getStepGoal();
+      if (savedGoal) {
+        setDailyGoal(savedGoal);
+      }
+    };
+
+    // Load and update badges
+    const updateBadges = async () => {
+      if (currentStepCount > 0) {
+        await checkAndAwardBadges(currentStepCount);
+      }
+      const badgeStatus = await getBadgesStatus();
+      setBadges(badgeStatus);
+    };
+
+    loadGoal();
+    updateBadges();
+  }, [currentStepCount]);
 
   return (
     <ParallaxScrollView
@@ -34,19 +60,35 @@ export default function HomeScreen() {
 
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Today&apos;s Steps</ThemedText>
-        <ThemedText style={styles.stepCount}>{currentStepCount}</ThemedText>
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressBar, { width: `${progress * 100}%` }]} />
-        </View>
-        <ThemedText>Goal: {dailyGoal} steps</ThemedText>
+        {isPedometerAvailable ? (
+          <>
+            <ThemedText style={styles.stepCount}>{currentStepCount}</ThemedText>
+            <View style={styles.progressContainer}>
+              <View
+                style={[styles.progressBar, { width: `${progress * 100}%` }]}
+              />
+            </View>
+            <ThemedText>Goal: {dailyGoal} steps</ThemedText>
+            {progress >= 1 && (
+              <ThemedText style={styles.goalCompleted}>
+                🎉 Goal completed!
+              </ThemedText>
+            )}
+          </>
+        ) : (
+          <ThemedText>Pedometer not available on this device</ThemedText>
+        )}
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Badges</ThemedText>
-        <ThemedText>
-          You&apos;ve earned the &quot;1,000 Steps&quot; badge! Keep it up!
-        </ThemedText>
-        {/* Placeholder for Badge components */}
+        {badges.length > 0 ? (
+          badges.map((badge) => <Badge key={badge.id} badge={badge} />)
+        ) : (
+          <ThemedText>
+            No badges earned yet. Keep walking to unlock them!
+          </ThemedText>
+        )}
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -82,5 +124,10 @@ const styles = StyleSheet.create({
   progressBar: {
     height: "100%",
     backgroundColor: "#4caf50",
+  },
+  goalCompleted: {
+    color: "#4caf50",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
