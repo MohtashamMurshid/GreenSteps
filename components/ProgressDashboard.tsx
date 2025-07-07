@@ -2,8 +2,12 @@ import { DailyStats, getDailyStats, getGreenPoints } from "@/lib/storage";
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
-import { LineChart, ProgressChart } from "react-native-chart-kit";
-import { VictoryArea, VictoryAxis, VictoryBar, VictoryChart, VictoryContainer, VictoryPie, VictoryTheme } from 'victory-native';
+import {
+  BarChart,
+  LineChart,
+  PieChart,
+  ProgressChart,
+} from "react-native-chart-kit";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 
@@ -49,7 +53,7 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       });
       setWeeklyData(weekData);
 
-      // Load monthly data for Victory charts
+      // Load monthly data for charts
       const last30Days = getLast30Days();
       const monthData = last30Days.map((date) => {
         return (
@@ -113,31 +117,6 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       ? weeklyData.reduce((sum, day) => sum + day.steps, 0) / weeklyData.length
       : 0;
 
-  // Victory Native chart data
-  const victoryBarData = weeklyData.map((day, index) => ({
-    x: index + 1,
-    y: day.steps,
-    label: new Date(day.date).toLocaleDateString("en", { weekday: "short" }),
-  }));
-
-  const victoryAreaData = monthlyData
-    .filter((day) => day.steps > 0)
-    .map((day, index) => ({
-      x: index + 1,
-      y: day.steps,
-    }));
-
-  const pieData = [
-    {
-      x: "Steps Goal",
-      y: Math.min(currentStepCount, dailyGoal),
-    },
-    {
-      x: "Remaining",
-      y: Math.max(0, dailyGoal - currentStepCount),
-    },
-  ];
-
   const weeklyStats = weeklyData.reduce(
     (acc, day) => ({
       totalSteps: acc.totalSteps + day.steps,
@@ -147,7 +126,7 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
     { totalSteps: 0, totalCO2: 0, totalPoints: 0 }
   );
 
-  // Chart data
+  // Chart configurations
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
     backgroundGradientFromOpacity: 0,
@@ -196,6 +175,37 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
     ],
   };
 
+  // Bar chart data for weekly steps
+  const barChartData = {
+    labels: weeklyData.map((day) => {
+      const date = new Date(day.date);
+      return date.toLocaleDateString("en", { weekday: "short" });
+    }),
+    datasets: [
+      {
+        data: weeklyData.map((day) => day.steps),
+      },
+    ],
+  };
+
+  // Pie chart data for daily goal progress
+  const pieChartData = [
+    {
+      name: "Completed",
+      population: Math.min(currentStepCount, dailyGoal),
+      color: "#4CAF50",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+    {
+      name: "Remaining",
+      population: Math.max(0, dailyGoal - currentStepCount),
+      color: "#E0E0E0",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15,
+    },
+  ];
+
   return (
     <ScrollView style={styles.container}>
       {/* Enhanced Stats Summary */}
@@ -234,24 +244,26 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             </View>
           </View>
 
-          {/* Daily Goal Pie Chart */}
-          <View style={styles.chartContainer}>
-            <ThemedText style={styles.chartTitle}>Daily Goal Progress</ThemedText>
-            <VictoryPie
-              data={pieData}
+        {/* Daily Goal Pie Chart */}
+        <View style={styles.chartContainer}>
+          <ThemedText style={styles.chartTitle}>Daily Goal Progress</ThemedText>
+          {pieChartData[0].population > 0 || pieChartData[1].population > 0 ? (
+            <PieChart
+              data={pieChartData}
               width={width - 80}
               height={200}
-              colorScale={['#4FC3F7', '#274472']}
-              innerRadius={50}
-              padAngle={3}
-              labelComponent={<></>}
+              chartConfig={chartConfig}
+              accessor="population"
+              backgroundColor="transparent"
+              paddingLeft="15"
+              absolute
             />
-            <ThemedText style={styles.pieChartNote}>
-              {Math.round(stepProgress * 100)}% Complete
-            </ThemedText>
-          </View>
-        </ThemedView>
-      </LinearGradient>
+          ) : null}
+          <ThemedText style={styles.pieChartNote}>
+            {Math.round(stepProgress * 100)}% Complete
+          </ThemedText>
+        </View>
+      </ThemedView>
 
       {/* Weekly Bar Chart */}
       <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
@@ -260,97 +272,87 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             📈 Weekly Steps Comparison
           </ThemedText>
 
-          {victoryBarData.length > 0 && victoryBarData.some((d) => d.y > 0) && (
-            <View style={styles.chartContainer}>
-              <VictoryChart
-                theme={VictoryTheme.material}
-                width={width - 40}
-                height={250}
-                domainPadding={20}
-                containerComponent={<VictoryContainer />}
-              >
-                <VictoryAxis dependentAxis tickFormat={(x) => `${x / 1000}k`} />
-                <VictoryAxis />
-                <VictoryBar
-                  data={victoryBarData}
-                  style={{
-                    data: { fill: '#4FC3F7' },
-                  }}
-                  animate={{
-                    duration: 1000,
-                    onLoad: { duration: 500 },
-                  }}
-                />
-              </VictoryChart>
-              <ThemedText style={styles.chartNote}>
-                Weekly Average: {Math.round(weeklyAverage).toLocaleString()} steps
-              </ThemedText>
-            </View>
-          )}
-        </ThemedView>
-      </LinearGradient>
-
-      {/* Monthly Trend Area Chart */}
-      <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
-        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
-          <ThemedText type="subtitle" style={styles.sectionTitle}>
-            📊 Monthly Activity Trend
-          </ThemedText>
-
-          {victoryAreaData.length > 0 && (
-            <View style={styles.chartContainer}>
-              <VictoryChart
-                theme={VictoryTheme.material}
-                width={width - 40}
-                height={250}
-                containerComponent={<VictoryContainer />}
-              >
-                <VictoryAxis dependentAxis tickFormat={(x) => `${x / 1000}k`} />
-                <VictoryAxis tickFormat={() => ""} />
-                <VictoryArea
-                  data={victoryAreaData}
-                  style={{
-                    data: {
-                      fill: '#1976D2',
-                      fillOpacity: 0.6,
-                      stroke: '#1976D2',
-                    },
-                  }}
-                  animate={{
-                    duration: 1000,
-                    onLoad: { duration: 500 },
-                  }}
-                  interpolation="cardinal"
-                />
-              </VictoryChart>
-              <ThemedText style={styles.chartNote}>
-                30-day activity pattern
-              </ThemedText>
-            </View>
-          )}
-        </ThemedView>
-      </LinearGradient>
-
-      {/* Legacy Charts (keeping for compatibility) */}
-      <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
-        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
-          <ThemedText type="subtitle" style={styles.sectionTitle}>
-            Legacy Progress Overview
-          </ThemedText>
-          {weeklyData.length > 0 && (
-            <ProgressChart
-              data={progressData}
+        {weeklyData.length > 0 && weeklyData.some((d) => d.steps > 0) && (
+          <View style={styles.chartContainer}>
+            <BarChart
+              data={barChartData}
               width={width - 40}
-              height={180}
-              strokeWidth={16}
-              radius={32}
-              chartConfig={chartConfig}
-              hideLegend={false}
+              height={250}
+              yAxisLabel=""
+              yAxisSuffix=""
+              chartConfig={{
+                ...chartConfig,
+                decimalPlaces: 0,
+              }}
+              verticalLabelRotation={0}
+              showValuesOnTopOfBars={true}
               style={styles.chart}
             />
-          )}
-        </ThemedView>
-      </LinearGradient>
+            <ThemedText style={styles.chartNote}>
+              Weekly Average: {Math.round(weeklyAverage).toLocaleString()} steps
+            </ThemedText>
+          </View>
+        )}
+      </ThemedView>
+
+      {/* Monthly Trend Line Chart */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={styles.sectionTitle}>
+          📊 Monthly Activity Trend
+        </ThemedText>
+
+        {monthlyData.length > 0 && monthlyData.some((d) => d.steps > 0) && (
+          <View style={styles.chartContainer}>
+            <LineChart
+              data={{
+                labels: monthlyData
+                  .filter((_, index) => index % 5 === 0) // Show every 5th label to avoid crowding
+                  .map((day) => {
+                    const date = new Date(day.date);
+                    return date.getDate().toString();
+                  }),
+                datasets: [
+                  {
+                    data: monthlyData.map((day) => day.steps),
+                    color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
+                    strokeWidth: 2,
+                  },
+                ],
+              }}
+              width={width - 40}
+              height={250}
+              chartConfig={{
+                ...chartConfig,
+                color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
+              }}
+              bezier
+              style={styles.chart}
+            />
+            <ThemedText style={styles.chartNote}>
+              30-day activity pattern
+            </ThemedText>
+          </View>
+        )}
+      </ThemedView>
+
+      {/* Progress Overview */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={styles.sectionTitle}>
+          📊 Progress Overview
+        </ThemedText>
+        {weeklyData.length > 0 && (
+          <ProgressChart
+            data={progressData}
+            width={width - 40}
+            height={180}
+            strokeWidth={16}
+            radius={32}
+            chartConfig={chartConfig}
+            hideLegend={false}
+            style={styles.chart}
+          />
+        )}
+      </ThemedView>
 
       <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
         <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
