@@ -3,10 +3,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import {
-  BarChart,
-  LineChart,
-  PieChart,
-  ProgressChart,
+    BarChart,
+    LineChart,
+    PieChart,
+    ProgressChart,
 } from "react-native-chart-kit";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -244,26 +244,27 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             </View>
           </View>
 
-        {/* Daily Goal Pie Chart */}
-        <View style={styles.chartContainer}>
-          <ThemedText style={styles.chartTitle}>Daily Goal Progress</ThemedText>
-          {pieChartData[0].population > 0 || pieChartData[1].population > 0 ? (
-            <PieChart
-              data={pieChartData}
-              width={width - 80}
-              height={200}
-              chartConfig={chartConfig}
-              accessor="population"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              absolute
-            />
-          ) : null}
-          <ThemedText style={styles.pieChartNote}>
-            {Math.round(stepProgress * 100)}% Complete
-          </ThemedText>
-        </View>
-      </ThemedView>
+          {/* Daily Goal Pie Chart */}
+          <View style={styles.chartContainer}>
+            <ThemedText style={styles.chartTitle}>Daily Goal Progress</ThemedText>
+            {pieChartData[0].population > 0 || pieChartData[1].population > 0 ? (
+              <PieChart
+                data={pieChartData}
+                width={width - 80}
+                height={200}
+                chartConfig={chartConfig}
+                accessor="population"
+                backgroundColor="transparent"
+                paddingLeft="15"
+                absolute
+              />
+            ) : null}
+            <ThemedText style={styles.pieChartNote}>
+              {Math.round(stepProgress * 100)}% Complete
+            </ThemedText>
+          </View>
+        </ThemedView>
+      </LinearGradient>
 
       {/* Weekly Bar Chart */}
       <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
@@ -272,28 +273,29 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
             📈 Weekly Steps Comparison
           </ThemedText>
 
-        {weeklyData.length > 0 && weeklyData.some((d) => d.steps > 0) && (
-          <View style={styles.chartContainer}>
-            <BarChart
-              data={barChartData}
-              width={width - 40}
-              height={250}
-              yAxisLabel=""
-              yAxisSuffix=""
-              chartConfig={{
-                ...chartConfig,
-                decimalPlaces: 0,
-              }}
-              verticalLabelRotation={0}
-              showValuesOnTopOfBars={true}
-              style={styles.chart}
-            />
-            <ThemedText style={styles.chartNote}>
-              Weekly Average: {Math.round(weeklyAverage).toLocaleString()} steps
-            </ThemedText>
-          </View>
-        )}
-      </ThemedView>
+          {weeklyData.length > 0 && weeklyData.some((d) => d.steps > 0) && (
+            <View style={styles.chartContainer}>
+              <BarChart
+                data={barChartData}
+                width={width - 40}
+                height={250}
+                yAxisLabel=""
+                yAxisSuffix=""
+                chartConfig={{
+                  ...chartConfig,
+                  decimalPlaces: 0,
+                }}
+                verticalLabelRotation={0}
+                showValuesOnTopOfBars={true}
+                style={styles.chart}
+              />
+              <ThemedText style={styles.chartNote}>
+                Weekly Average: {Math.round(weeklyAverage).toLocaleString()} steps
+              </ThemedText>
+            </View>
+          )}
+        </ThemedView>
+      </LinearGradient>
 
       {/* Monthly Trend Line Chart */}
       <ThemedView style={styles.section}>
