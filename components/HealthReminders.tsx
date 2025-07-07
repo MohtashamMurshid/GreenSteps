@@ -2,11 +2,11 @@ import { audioSystem } from "@/lib/audioSystem";
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from "react";
 import {
-  ScrollView,
-  StyleSheet,
-  Switch,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    StyleSheet,
+    Switch,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -358,263 +358,271 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <ThemedView style={styles.section}>
-        <ThemedText type="title" style={styles.title}>
-          🏥 Health & Wellness Reminders
-        </ThemedText>
-
-        {/* Today's Stats */}
-        <ThemedView style={styles.statsContainer}>
-          <ThemedText type="subtitle" style={styles.sectionTitle}>
-            Today's Health Stats
+    <View style={styles.container}>
+      <ScrollView style={styles.section}>
+        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
+          <ThemedText type="title" style={styles.title}>
+            Health & Wellness Reminders
           </ThemedText>
-          <View style={styles.statsRow}>
-            <View style={styles.statCard}>
-              <ThemedText style={styles.statNumber}>
-                {todayStats.waterIntake}
-              </ThemedText>
-              <ThemedText style={styles.statLabel}>💧 Glasses</ThemedText>
-              <TouchableOpacity
-                style={styles.logButton}
-                onPress={handleHydrationLog}
-              >
-                <ThemedText style={styles.logButtonText}>+1</ThemedText>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.statCard}>
-              <ThemedText style={styles.statNumber}>
-                {todayStats.sleepQuality}/5
-              </ThemedText>
-              <ThemedText style={styles.statLabel}>😴 Sleep Quality</ThemedText>
-            </View>
-            <View style={styles.statCard}>
-              <ThemedText style={styles.statNumber}>
-                {todayStats.activeHours}h
-              </ThemedText>
-              <ThemedText style={styles.statLabel}>🚶 Active Hours</ThemedText>
-            </View>
-          </View>
-        </ThemedView>
 
-        {/* Hydration Settings */}
-        <ThemedView style={styles.reminderSection}>
-          <View style={styles.reminderHeader}>
-            <ThemedText type="subtitle">💧 Hydration Reminders</ThemedText>
-            <Switch
-              value={settings.hydration.enabled}
-              onValueChange={(value) =>
-                updateSetting("hydration", "enabled", value)
-              }
-              trackColor={{ false: "#767577", true: "#4CAF50" }}
-            />
-          </View>
-
-          {settings.hydration.enabled && (
-            <View style={styles.settingsContent}>
-              <View style={styles.settingRow}>
-                <ThemedText>
-                  Interval: {settings.hydration.interval} minutes
+          {/* Today's Stats */}
+          <ThemedView style={styles.statsContainer}>
+            <ThemedText type="subtitle" style={styles.sectionTitle}>
+              Today's Health Stats
+            </ThemedText>
+            <View style={styles.statsRow}>
+              <View style={styles.statCard}>
+                <ThemedText style={styles.statNumber}>
+                  {todayStats.waterIntake}
                 </ThemedText>
-                <View style={styles.intervalButtons}>
-                  <TouchableOpacity
-                    style={styles.intervalButton}
-                    onPress={() =>
-                      updateSetting(
-                        "hydration",
-                        "interval",
-                        Math.max(30, settings.hydration.interval - 15)
-                      )
-                    }
-                  >
-                    <ThemedText style={styles.intervalButtonText}>-</ThemedText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.intervalButton}
-                    onPress={() =>
-                      updateSetting(
-                        "hydration",
-                        "interval",
-                        Math.min(180, settings.hydration.interval + 15)
-                      )
-                    }
-                  >
-                    <ThemedText style={styles.intervalButtonText}>+</ThemedText>
-                  </TouchableOpacity>
-                </View>
+                <ThemedText style={styles.statLabel}>Glasses</ThemedText>
+                <TouchableOpacity
+                  style={styles.logButton}
+                  onPress={handleHydrationLog}
+                >
+                  <ThemedText style={styles.logButtonText}>+1</ThemedText>
+                </TouchableOpacity>
               </View>
-
-              <TouchableOpacity
-                style={styles.testButton}
-                onPress={() => testReminder("hydration")}
-              >
-                <ThemedText style={styles.testButtonText}>
-                  🔊 Test Reminder
+              <View style={styles.statCard}>
+                <ThemedText style={styles.statNumber}>
+                  {todayStats.sleepQuality}/5
                 </ThemedText>
-              </TouchableOpacity>
-
-              {nextReminders.hydration && (
-                <ThemedText style={styles.nextReminderText}>
-                  Next: {nextReminders.hydration.toLocaleTimeString()}
+                <ThemedText style={styles.statLabel}> Sleep Quality</ThemedText>
+              </View>
+              <View style={styles.statCard}>
+                <ThemedText style={styles.statNumber}>
+                  {todayStats.activeHours}h
                 </ThemedText>
-              )}
+                <ThemedText style={styles.statLabel}>🚶 Active Hours</ThemedText>
+              </View>
             </View>
-          )}
-        </ThemedView>
+          </ThemedView>
 
-        {/* Sleep Settings */}
-        <ThemedView style={styles.reminderSection}>
-          <View style={styles.reminderHeader}>
-            <ThemedText type="subtitle">😴 Sleep Reminders</ThemedText>
-            <Switch
-              value={settings.sleep.enabled}
-              onValueChange={(value) =>
-                updateSetting("sleep", "enabled", value)
-              }
-              trackColor={{ false: "#767577", true: "#4CAF50" }}
-            />
-          </View>
+          {/* Hydration Settings */}
+          <ThemedView style={styles.reminderSection}>
+            <View style={styles.reminderHeader}>
+              <ThemedText type="subtitle">Hydration Reminders</ThemedText>
+              <Switch
+                value={settings.hydration.enabled}
+                onValueChange={(value) =>
+                  updateSetting("hydration", "enabled", value)
+                }
+                trackColor={{ false: "#767577", true: "#4CAF50" }}
+              />
+            </View>
 
-          {settings.sleep.enabled && (
-            <View style={styles.settingsContent}>
-              <View style={styles.settingRow}>
-                <ThemedText>
-                  Bedtime: {settings.sleep.bedtimeReminder}
-                </ThemedText>
-              </View>
-
-              <View style={styles.settingRow}>
-                <ThemedText>
-                  Wind down: {settings.sleep.windDownDuration} min before
-                </ThemedText>
-              </View>
-
-              <View style={styles.sleepQualityContainer}>
-                <ThemedText style={styles.sleepQualityLabel}>
-                  Rate last night's sleep:
-                </ThemedText>
-                <View style={styles.ratingButtons}>
-                  {[1, 2, 3, 4, 5].map((rating) => (
+            {settings.hydration.enabled && (
+              <View style={styles.settingsContent}>
+                <View style={styles.settingRow}>
+                  <ThemedText>
+                    Interval: {settings.hydration.interval} minutes
+                  </ThemedText>
+                  <View style={styles.intervalButtons}>
                     <TouchableOpacity
-                      key={rating}
-                      style={[
-                        styles.ratingButton,
-                        todayStats.sleepQuality === rating &&
-                          styles.ratingButtonActive,
-                      ]}
-                      onPress={() => handleSleepQualityUpdate(rating)}
+                      style={styles.intervalButton}
+                      onPress={() =>
+                        updateSetting(
+                          "hydration",
+                          "interval",
+                          Math.max(30, settings.hydration.interval - 15)
+                        )
+                      }
                     >
-                      <ThemedText style={styles.ratingButtonText}>
-                        {rating}
-                      </ThemedText>
+                      <ThemedText style={styles.intervalButtonText}>-</ThemedText>
                     </TouchableOpacity>
-                  ))}
+                    <TouchableOpacity
+                      style={styles.intervalButton}
+                      onPress={() =>
+                        updateSetting(
+                          "hydration",
+                          "interval",
+                          Math.min(180, settings.hydration.interval + 15)
+                        )
+                      }
+                    >
+                      <ThemedText style={styles.intervalButtonText}>+</ThemedText>
+                    </TouchableOpacity>
+                  </View>
                 </View>
+
+                <TouchableOpacity
+                  style={styles.testButton}
+                  onPress={() => testReminder("hydration")}
+                >
+                  <ThemedText style={styles.testButtonText}>
+                    Test Reminder
+                  </ThemedText>
+                </TouchableOpacity>
+
+                {nextReminders.hydration && (
+                  <ThemedText style={styles.nextReminderText}>
+                    Next: {nextReminders.hydration.toLocaleTimeString()}
+                  </ThemedText>
+                )}
               </View>
+            )}
+          </ThemedView>
 
-              <TouchableOpacity
-                style={styles.testButton}
-                onPress={() => testReminder("sleep")}
-              >
-                <ThemedText style={styles.testButtonText}>
-                  🔊 Test Reminder
-                </ThemedText>
-              </TouchableOpacity>
-
-              {nextReminders.sleep && (
-                <ThemedText style={styles.nextReminderText}>
-                  Next bedtime: {nextReminders.sleep.toLocaleTimeString()}
-                </ThemedText>
-              )}
+          {/* Sleep Settings */}
+          <ThemedView style={styles.reminderSection}>
+            <View style={styles.reminderHeader}>
+              <ThemedText type="subtitle">Sleep Reminders</ThemedText>
+              <Switch
+                value={settings.sleep.enabled}
+                onValueChange={(value) =>
+                  updateSetting("sleep", "enabled", value)
+                }
+                trackColor={{ false: "#767577", true: "#4CAF50" }}
+              />
             </View>
-          )}
-        </ThemedView>
 
-        {/* Movement Settings */}
-        <ThemedView style={styles.reminderSection}>
-          <View style={styles.reminderHeader}>
-            <ThemedText type="subtitle">🚶 Movement Reminders</ThemedText>
-            <Switch
-              value={settings.movement.enabled}
-              onValueChange={(value) =>
-                updateSetting("movement", "enabled", value)
-              }
-              trackColor={{ false: "#767577", true: "#4CAF50" }}
-            />
-          </View>
-
-          {settings.movement.enabled && (
-            <View style={styles.settingsContent}>
-              <View style={styles.settingRow}>
-                <ThemedText>
-                  Idle time: {settings.movement.interval} minutes
-                </ThemedText>
-                <View style={styles.intervalButtons}>
-                  <TouchableOpacity
-                    style={styles.intervalButton}
-                    onPress={() =>
-                      updateSetting(
-                        "movement",
-                        "interval",
-                        Math.max(15, settings.movement.interval - 15)
-                      )
-                    }
-                  >
-                    <ThemedText style={styles.intervalButtonText}>-</ThemedText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.intervalButton}
-                    onPress={() =>
-                      updateSetting(
-                        "movement",
-                        "interval",
-                        Math.min(120, settings.movement.interval + 15)
-                      )
-                    }
-                  >
-                    <ThemedText style={styles.intervalButtonText}>+</ThemedText>
-                  </TouchableOpacity>
+            {settings.sleep.enabled && (
+              <View style={styles.settingsContent}>
+                <View style={styles.settingRow}>
+                  <ThemedText>
+                    Bedtime: {settings.sleep.bedtimeReminder}
+                  </ThemedText>
                 </View>
+
+                <View style={styles.settingRow}>
+                  <ThemedText>
+                    Wind down: {settings.sleep.windDownDuration} min before
+                  </ThemedText>
+                </View>
+
+                <View style={styles.sleepQualityContainer}>
+                  <ThemedText style={styles.sleepQualityLabel}>
+                    Rate last night's sleep:
+                  </ThemedText>
+                  <View style={styles.ratingButtons}>
+                    {[1, 2, 3, 4, 5].map((rating) => (
+                      <TouchableOpacity
+                        key={rating}
+                        style={[
+                          styles.ratingButton,
+                          todayStats.sleepQuality === rating &&
+                            styles.ratingButtonActive,
+                        ]}
+                        onPress={() => handleSleepQualityUpdate(rating)}
+                      >
+                        <ThemedText style={styles.ratingButtonText}>
+                          {rating}
+                        </ThemedText>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.testButton}
+                  onPress={() => testReminder("sleep")}
+                >
+                  <ThemedText style={styles.testButtonText}>
+                    Test Reminder
+                  </ThemedText>
+                </TouchableOpacity>
+
+                {nextReminders.sleep && (
+                  <ThemedText style={styles.nextReminderText}>
+                    Next bedtime: {nextReminders.sleep.toLocaleTimeString()}
+                  </ThemedText>
+                )}
               </View>
+            )}
+          </ThemedView>
 
-              <TouchableOpacity
-                style={styles.testButton}
-                onPress={() => testReminder("movement")}
-              >
-                <ThemedText style={styles.testButtonText}>
-                  🔊 Test Reminder
-                </ThemedText>
-              </TouchableOpacity>
-
-              {nextReminders.movement && (
-                <ThemedText style={styles.nextReminderText}>
-                  Next: {nextReminders.movement.toLocaleTimeString()}
-                </ThemedText>
-              )}
+          {/* Movement Settings */}
+          <ThemedView style={styles.reminderSection}>
+            <View style={styles.reminderHeader}>
+              <ThemedText type="subtitle">Movement Reminders</ThemedText>
+              <Switch
+                value={settings.movement.enabled}
+                onValueChange={(value) =>
+                  updateSetting("movement", "enabled", value)
+                }
+                trackColor={{ false: "#767577", true: "#4CAF50" }}
+              />
             </View>
-          )}
+
+            {settings.movement.enabled && (
+              <View style={styles.settingsContent}>
+                <View style={styles.settingRow}>
+                  <ThemedText>
+                    Idle time: {settings.movement.interval} minutes
+                  </ThemedText>
+                  <View style={styles.intervalButtons}>
+                    <TouchableOpacity
+                      style={styles.intervalButton}
+                      onPress={() =>
+                        updateSetting(
+                          "movement",
+                          "interval",
+                          Math.max(15, settings.movement.interval - 15)
+                        )
+                      }
+                    >
+                      <ThemedText style={styles.intervalButtonText}>-</ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.intervalButton}
+                      onPress={() =>
+                        updateSetting(
+                          "movement",
+                          "interval",
+                          Math.min(120, settings.movement.interval + 15)
+                        )
+                      }
+                    >
+                      <ThemedText style={styles.intervalButtonText}>+</ThemedText>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.testButton}
+                  onPress={() => testReminder("movement")}
+                >
+                  <ThemedText style={styles.testButtonText}>
+                    Test Reminder
+                  </ThemedText>
+                </TouchableOpacity>
+
+                {nextReminders.movement && (
+                  <ThemedText style={styles.nextReminderText}>
+                    Next: {nextReminders.movement.toLocaleTimeString()}
+                  </ThemedText>
+                )}
+              </View>
+            )}
+          </ThemedView>
         </ThemedView>
-      </ThemedView>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'transparent',
+    padding: 16,
   },
   section: {
     padding: 20,
+    backgroundColor: 'transparent',
+    shadowColor: 'transparent',
+    elevation: 0,
   },
   title: {
     textAlign: "center",
     marginBottom: 20,
+    color: '#fff',
   },
   statsContainer: {
     marginBottom: 20,
     padding: 15,
     borderRadius: 15,
-    backgroundColor: "rgba(76, 175, 80, 0.1)",
+    backgroundColor: 'rgba(33, 150, 243, 0.10)',
   },
   sectionTitle: {
     marginBottom: 15,
@@ -630,17 +638,18 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: "#4CAF50",
+    fontWeight: 'bold',
+    color: '#fff',
   },
   statLabel: {
     fontSize: 12,
     opacity: 0.7,
     marginTop: 4,
+    color: '#fff',
   },
   logButton: {
     marginTop: 8,
-    backgroundColor: "#4CAF50",
+    backgroundColor: '#274472',
     borderRadius: 15,
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -654,7 +663,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 15,
     borderRadius: 15,
-    backgroundColor: "rgba(33, 150, 243, 0.1)",
+    backgroundColor: 'rgba(79, 195, 247, 0.10)',
   },
   reminderHeader: {
     flexDirection: "row",
@@ -676,12 +685,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   intervalButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: '#4FC3F7',
     borderRadius: 15,
     width: 30,
     height: 30,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   intervalButtonText: {
     color: "white",
@@ -726,7 +735,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ratingButtonActive: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: '#4FC3F7',
   },
   ratingButtonText: {
     fontWeight: "600",

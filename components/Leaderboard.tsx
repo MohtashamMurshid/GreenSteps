@@ -1,11 +1,12 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from "react";
 import {
-  Animated,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
+    Animated,
+    Dimensions,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -363,7 +364,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <LinearGradient colors={['#00c6fb', '#0072c6']} style={styles.container}>
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
@@ -412,19 +413,18 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           </View>
         )}
       </ScrollView>
-    </ThemedView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   tabContainer: {
     flexDirection: "row",
     marginBottom: 20,
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "#1A2639",
     borderRadius: 25,
     padding: 4,
   },
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   activeTab: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#4FC3F7",
   },
   tabText: {
     fontSize: 16,
@@ -451,8 +451,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 15,
-    textAlign: "center",
+    color: '#fff',
+    marginBottom: 10,
   },
   leaderboardItem: {
     marginBottom: 10,
@@ -462,13 +462,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
     borderRadius: 15,
-    backgroundColor: "rgba(76, 175, 80, 0.1)",
+    backgroundColor: "rgba(33, 150, 243, 0.08)",
     borderWidth: 1,
-    borderColor: "rgba(76, 175, 80, 0.3)",
+    borderColor: "rgba(33, 150, 243, 0.18)",
   },
   currentUserCard: {
-    backgroundColor: "rgba(33, 150, 243, 0.2)",
-    borderColor: "rgba(33, 150, 243, 0.5)",
+    backgroundColor: "rgba(33, 150, 243, 0.25)",
+    borderColor: "#4FC3F7",
   },
   rankSection: {
     alignItems: "center",
@@ -490,6 +490,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
+    color: '#fff',
   },
   statsRow: {
     flexDirection: "row",
@@ -498,13 +499,14 @@ const styles = StyleSheet.create({
   statText: {
     fontSize: 12,
     opacity: 0.8,
+    color: '#fff',
   },
   challengeCard: {
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "rgba(255, 152, 0, 0.1)",
+    backgroundColor: "rgba(79, 195, 247, 0.08)",
     borderWidth: 1,
-    borderColor: "rgba(255, 152, 0, 0.3)",
+    borderColor: "rgba(79, 195, 247, 0.18)",
     marginBottom: 15,
   },
   challengeHeader: {
@@ -519,7 +521,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   countdownContainer: {
-    backgroundColor: "rgba(255, 152, 0, 0.2)",
+    backgroundColor: "rgba(79, 195, 247, 0.18)",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 15,
@@ -527,7 +529,7 @@ const styles = StyleSheet.create({
   countdownText: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#FF9800",
+    color: "#4FC3F7",
   },
   challengeDescription: {
     fontSize: 14,
@@ -565,6 +567,11 @@ const styles = StyleSheet.create({
   rewardText: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#FF9800",
+    color: "#4FC3F7",
+  },
+  leaderboardCard: {
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 20,
   },
 });

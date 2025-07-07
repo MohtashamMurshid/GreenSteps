@@ -20,8 +20,8 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   progress,
   size = 120,
   strokeWidth = 8,
-  color = "#4CAF50",
-  backgroundColor = "#E0E0E0",
+  color = '#4FC3F7',
+  backgroundColor = '#274472',
   title,
   subtitle,
   showPercentage = false,
@@ -182,13 +182,13 @@ export const AchievementCircle: React.FC<AchievementCircleProps> = ({
   const getColor = () => {
     switch (type) {
       case "goal":
-        return "#4CAF50";
+        return "#4FC3F7";
       case "badge":
-        return "#FF9800";
+        return "#1565C0";
       case "milestone":
-        return "#2196F3";
+        return "#1976D2";
       default:
-        return "#9C27B0";
+        return "#132743";
     }
   };
 
@@ -236,19 +236,22 @@ const styles = StyleSheet.create({
   },
   percentage: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    color: '#fff',
   },
   title: {
     fontSize: 14,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: '600',
+    textAlign: 'center',
     marginTop: 2,
+    color: '#fff',
   },
   subtitle: {
     fontSize: 10,
     opacity: 0.7,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 1,
+    color: '#fff',
   },
   multiContainer: {
     flexDirection: "row",

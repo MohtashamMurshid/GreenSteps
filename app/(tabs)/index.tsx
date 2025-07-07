@@ -1,10 +1,11 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 import Badge from "@/components/Badge";
@@ -12,8 +13,8 @@ import { EcoMap } from "@/components/EcoMap";
 import { HealthReminders } from "@/components/HealthReminders";
 import { Leaderboard } from "@/components/Leaderboard";
 import {
-  MultiProgressCircle,
-  ProgressCircle,
+    MultiProgressCircle,
+    ProgressCircle,
 } from "@/components/ProgressCircle";
 import { ProgressDashboard } from "@/components/ProgressDashboard";
 import { RewardAnimation } from "@/components/RewardAnimation";
@@ -22,13 +23,13 @@ import { ThemedView } from "@/components/ThemedView";
 import { usePedometer } from "@/hooks/usePedometer";
 import { audioSystem } from "@/lib/audioSystem";
 import {
-  Achievement,
-  Badge as BadgeType,
-  calculateCO2Saved,
-  getBadgesStatus,
-  getMotivationalMessage,
-  processAchievements,
-  updateDailyProgress,
+    Achievement,
+    Badge as BadgeType,
+    calculateCO2Saved,
+    getBadgesStatus,
+    getMotivationalMessage,
+    processAchievements,
+    updateDailyProgress,
 } from "@/lib/gamification";
 import { getGreenPoints, getStepGoal } from "@/lib/storage";
 
@@ -175,7 +176,7 @@ export default function HomeScreen() {
             activeTab === "dashboard" && styles.activeTabText,
           ]}
         >
-          📊 Dashboard
+          Dashboard
         </ThemedText>
       </TouchableOpacity>
       <TouchableOpacity
@@ -188,7 +189,7 @@ export default function HomeScreen() {
             activeTab === "leaderboard" && styles.activeTabText,
           ]}
         >
-          🏆 Community
+          Community
         </ThemedText>
       </TouchableOpacity>
       <TouchableOpacity
@@ -196,9 +197,12 @@ export default function HomeScreen() {
         onPress={() => setActiveTab("map")}
       >
         <ThemedText
-          style={[styles.tabText, activeTab === "map" && styles.activeTabText]}
+          style={[
+            styles.tabText,
+            activeTab === "map" && styles.activeTabText,
+          ]}
         >
-          🗺️ Routes
+          Routes
         </ThemedText>
       </TouchableOpacity>
       <TouchableOpacity
@@ -211,7 +215,7 @@ export default function HomeScreen() {
             activeTab === "health" && styles.activeTabText,
           ]}
         >
-          🏥 Health
+          Health
         </ThemedText>
       </TouchableOpacity>
     </View>
@@ -247,7 +251,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header Section */}
-        <ThemedView style={styles.headerContainer}>
+        <ThemedView style={[styles.headerContainer, { backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0 }]}>
           <ThemedText type="title" style={styles.title}>
             GreenSteps Dashboard
           </ThemedText>
@@ -421,68 +425,93 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Tab Navigation */}
-      {renderTabNavigation()}
-
-      {/* Content */}
-      <View style={styles.contentContainer}>{renderContent()}</View>
-
-      {/* Reward Animation Overlay */}
-      <RewardAnimation
-        visible={showRewardAnimation}
-        type={
-          currentAchievement?.type === "badge"
-            ? "badge"
-            : currentAchievement?.type === "goal"
-            ? "goal"
-            : "greenpoints"
-        }
-        points={currentAchievement?.greenPoints}
-        message={currentAchievement?.title}
-        onComplete={onRewardAnimationComplete}
-      />
-    </SafeAreaView>
+    <LinearGradient colors={['#b2f0ff', '#005fa3']} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
+        {/* Content */}
+        <View style={styles.contentContainer}>{renderContent()}</View>
+        {/* Bottom Tab Navigation */}
+        <View style={styles.bottomTabNavigation}>{renderTabNavigation()}</View>
+        {/* Reward Animation Overlay */}
+        <RewardAnimation
+          visible={showRewardAnimation}
+          type={
+            currentAchievement?.type === 'badge'
+              ? 'badge'
+              : currentAchievement?.type === 'goal'
+              ? 'goal'
+              : 'greenpoints'
+          }
+          points={currentAchievement?.greenPoints}
+          message={currentAchievement?.title}
+          onComplete={onRewardAnimationComplete}
+        />
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5", // Light background for the whole screen
+    backgroundColor: 'transparent',
   },
   contentContainer: {
     flex: 1,
   },
   tabNavigation: {
-    flexDirection: "row",
-    backgroundColor: "#ffffff",
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   tab: {
     flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    borderRadius: 15,
-    alignItems: "center",
-    marginHorizontal: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    marginHorizontal: 6,
+    borderRadius: 22,
+    backgroundColor: 'transparent',
+    minWidth: 0,
+    minHeight: 44,
+    position: 'relative',
   },
   activeTab: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: '#00eaff',
+    borderRadius: 22,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    minWidth: 70,
+    minHeight: 36,
+    maxWidth: 110,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#00eaff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    elevation: 6,
   },
   tabText: {
     fontSize: 12,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#fff',
+    marginLeft: 0,
+    opacity: 1,
+    flexShrink: 1,
+    flexGrow: 1,
+    flexBasis: 'auto',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+    maxWidth: 80,
+    overflow: 'hidden',
   },
   activeTabText: {
-    color: "white",
+    color: '#005fa3',
+    opacity: 1,
   },
   scrollView: {
     flex: 1,
@@ -492,134 +521,199 @@ const styles = StyleSheet.create({
     paddingBottom: 80, // Add padding at the bottom for the reward animation
   },
   headerContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 20,
+    backgroundColor: 'transparent',
+    elevation: 0,
+    shadowOpacity: 0,
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
   },
   section: {
     marginBottom: 20,
+    backgroundColor: 'transparent',
+    borderRadius: 15,
+    padding: 16,
+    overflow: 'hidden',
+  },
+  sectionGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 15,
   },
   quickStatsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginBottom: 20,
   },
   statCard: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 15,
-    backgroundColor: "rgba(76, 175, 80, 0.1)",
     borderRadius: 10,
     minWidth: 80,
+    overflow: 'hidden',
+    backgroundColor: 'transparent',
+  },
+  statCardGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 10,
   },
   statNumber: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#4CAF50",
+    fontWeight: 'bold',
+    color: '#fff',
   },
   statLabel: {
     fontSize: 12,
     opacity: 0.7,
     marginTop: 4,
-    textAlign: "center",
+    textAlign: 'center',
+    color: '#b2e0ff',
   },
   sectionTitle: {
     marginBottom: 15,
-    textAlign: "center",
+    textAlign: 'center',
+    color: '#fff',
   },
   progressWrapper: {
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "#e0f2f7", // Light blue background
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
+  progressGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 15,
   },
   messageSection: {
     marginBottom: 20,
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "rgba(33, 150, 243, 0.1)",
-    alignItems: "center",
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  messageGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 15,
   },
   motivationalText: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 10,
-    fontWeight: "500",
+    fontWeight: '500',
+    color: '#fff',
   },
   speakButton: {
     fontSize: 14,
-    color: "#2196F3",
+    color: '#00eaff',
     padding: 8,
     borderRadius: 5,
-    backgroundColor: "rgba(33, 150, 243, 0.2)",
+    backgroundColor: 'rgba(0,234,255,0.2)',
   },
   stepProgressContent: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   progressContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginVertical: 20,
   },
   goalCompleted: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#4CAF50",
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: '#00eaff',
+    textAlign: 'center',
     marginTop: 10,
   },
   badgesContent: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   badgesContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
     marginTop: 10,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   unavailableContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "rgba(255, 152, 0, 0.1)", // Orange background
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
+  unavailableGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 15,
   },
   unavailableText: {
     fontSize: 16,
-    color: "#FF9800",
-    textAlign: "center",
+    color: '#00eaff',
+    textAlign: 'center',
   },
   noBadgesContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "rgba(255, 152, 0, 0.1)", // Orange background
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
+  noBadgesGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 15,
   },
   noBadgesText: {
     fontSize: 16,
-    color: "#FF9800",
-    textAlign: "center",
+    color: '#00eaff',
+    textAlign: 'center',
   },
   loadingContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 20,
     borderRadius: 15,
-    backgroundColor: "rgba(33, 150, 243, 0.1)", // Blue background
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+  },
+  loadingGradient: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 15,
   },
   loadingText: {
     fontSize: 16,
-    color: "#2196F3",
-    textAlign: "center",
+    color: '#00eaff',
+    textAlign: 'center',
   },
   bottomSpacing: {
-    height: 80, // Space for the reward animation
+    height: 80,
   },
   reactLogo: {
     height: 178,
     width: 290,
     bottom: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute',
+  },
+  bottomTabNavigation: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#005fa3',
+    paddingBottom: 18,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    zIndex: 10,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    elevation: 12,
   },
 });

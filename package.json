@@ -25,6 +25,7 @@
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.3.0",
     "expo-linking": "~7.1.5",
+    "expo-location": "~18.1.6",
     "expo-notifications": "~0.31.4",
     "expo-router": "~5.1.1",
     "expo-sensors": "~14.1.4",
@@ -47,7 +48,8 @@
     "react-native-svg": "^15.12.0",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "victory-native": "^41.17.4"
+    "victory-native": "^36.9.2",
+    "expo-linear-gradient": "~14.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

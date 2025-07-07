@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, StyleSheet, View } from "react-native";
@@ -146,7 +147,7 @@ export const RewardAnimation: React.FC<RewardAnimationProps> = ({
   if (!visible) return null;
 
   return (
-    <View style={styles.overlay}>
+    <LinearGradient colors={['#162447', '#1f4068']} style={styles.overlay}>
       <Animated.View
         style={[
           styles.container,
@@ -203,7 +204,7 @@ export const RewardAnimation: React.FC<RewardAnimationProps> = ({
           </View>
         </ThemedView>
       </Animated.View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -217,7 +218,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1000,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
   container: {
     margin: 20,
@@ -238,13 +238,13 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   greenpointsContent: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: '#1976D2', // blue
   },
   badgeContent: {
-    backgroundColor: "#FF9800",
+    backgroundColor: '#1565C0', // blue
   },
   goalContent: {
-    backgroundColor: "#2196F3",
+    backgroundColor: '#4FC3F7', // blue accent
   },
   lottieContainer: {
     position: "relative",

@@ -1,21 +1,21 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  View,
+    Alert,
+    Dimensions,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import MapView, {
-  Callout,
-  LatLng,
-  Marker,
-  Polyline,
-  Region,
+    Callout,
+    LatLng,
+    Marker,
+    Polyline,
+    Region,
 } from "react-native-maps";
 import { ThemedText } from "./ThemedText";
-import { ThemedView } from "./ThemedView";
 
 const { width, height } = Dimensions.get("window");
 
@@ -280,7 +280,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <LinearGradient colors={['#162447', '#1f4068']} style={styles.container}>
       {/* Map Controls */}
       <View style={styles.controlsContainer}>
         <TouchableOpacity
@@ -411,7 +411,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
           </ThemedText>
         </View>
       )}
-    </ThemedView>
+    </LinearGradient>
   );
 };
 
@@ -429,18 +429,18 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   controlButton: {
-    backgroundColor: "rgba(76, 175, 80, 0.9)",
+    backgroundColor: 'rgba(33, 150, 243, 0.9)',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 20,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
   trackingButton: {
-    backgroundColor: "rgba(244, 67, 54, 0.9)",
+    backgroundColor: 'rgba(79, 195, 247, 0.9)',
   },
   controlButtonText: {
     color: "white",
@@ -508,13 +508,14 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#4CAF50",
+    fontWeight: 'bold',
+    color: '#fff',
   },
   statLabel: {
     fontSize: 10,
     opacity: 0.7,
     marginTop: 2,
+    color: '#fff',
   },
   activityIndicator: {
     textAlign: "center",

@@ -14,7 +14,7 @@ export default function Badge({ badge }: BadgeProps) {
       style={[styles.container, { opacity: badge.achieved ? 1 : 0.5 }]}
     >
       <ThemedText style={styles.name}>{badge.name}</ThemedText>
-      <ThemedText>{badge.description}</ThemedText>
+      <ThemedText style={styles.description}>{badge.description}</ThemedText>
     </ThemedView>
   );
 }
@@ -25,10 +25,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#274472',
+    backgroundColor: '#132743',
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 4,
+    color: '#fff',
+  },
+  description: {
+    color: '#fff',
   },
 });
