@@ -2,11 +2,11 @@ import { audioSystem } from "@/lib/audioSystem";
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Switch,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -360,7 +360,16 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
   return (
     <View style={styles.container}>
       <ScrollView style={styles.section}>
-        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
+        <ThemedView
+          style={[
+            styles.section,
+            {
+              backgroundColor: "transparent",
+              shadowColor: "transparent",
+              elevation: 0,
+            },
+          ]}
+        >
           <ThemedText type="title" style={styles.title}>
             Health & Wellness Reminders
           </ThemedText>
@@ -368,7 +377,7 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
           {/* Today's Stats */}
           <ThemedView style={styles.statsContainer}>
             <ThemedText type="subtitle" style={styles.sectionTitle}>
-              Today's Health Stats
+              Today&apos;s Health Stats
             </ThemedText>
             <View style={styles.statsRow}>
               <View style={styles.statCard}>
@@ -387,13 +396,15 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
                 <ThemedText style={styles.statNumber}>
                   {todayStats.sleepQuality}/5
                 </ThemedText>
-                <ThemedText style={styles.statLabel}> Sleep Quality</ThemedText>
+                <ThemedText style={styles.statLabel}>Sleep Quality</ThemedText>
               </View>
               <View style={styles.statCard}>
                 <ThemedText style={styles.statNumber}>
                   {todayStats.activeHours}h
                 </ThemedText>
-                <ThemedText style={styles.statLabel}>🚶 Active Hours</ThemedText>
+                <ThemedText style={styles.statLabel}>
+                  🚶 Active Hours
+                </ThemedText>
               </View>
             </View>
           </ThemedView>
@@ -428,7 +439,9 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
                         )
                       }
                     >
-                      <ThemedText style={styles.intervalButtonText}>-</ThemedText>
+                      <ThemedText style={styles.intervalButtonText}>
+                        -
+                      </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.intervalButton}
@@ -440,7 +453,9 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
                         )
                       }
                     >
-                      <ThemedText style={styles.intervalButtonText}>+</ThemedText>
+                      <ThemedText style={styles.intervalButtonText}>
+                        +
+                      </ThemedText>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -492,7 +507,7 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
 
                 <View style={styles.sleepQualityContainer}>
                   <ThemedText style={styles.sleepQualityLabel}>
-                    Rate last night's sleep:
+                    Rate last night&apos;s sleep:
                   </ThemedText>
                   <View style={styles.ratingButtons}>
                     {[1, 2, 3, 4, 5].map((rating) => (
@@ -561,7 +576,9 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
                         )
                       }
                     >
-                      <ThemedText style={styles.intervalButtonText}>-</ThemedText>
+                      <ThemedText style={styles.intervalButtonText}>
+                        -
+                      </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.intervalButton}
@@ -573,7 +590,9 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
                         )
                       }
                     >
-                      <ThemedText style={styles.intervalButtonText}>+</ThemedText>
+                      <ThemedText style={styles.intervalButtonText}>
+                        +
+                      </ThemedText>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -604,25 +623,25 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     padding: 16,
   },
   section: {
     padding: 20,
-    backgroundColor: 'transparent',
-    shadowColor: 'transparent',
+    backgroundColor: "transparent",
+    shadowColor: "transparent",
     elevation: 0,
   },
   title: {
     textAlign: "center",
     marginBottom: 20,
-    color: '#fff',
+    color: "#fff",
   },
   statsContainer: {
     marginBottom: 20,
     padding: 15,
     borderRadius: 15,
-    backgroundColor: 'rgba(33, 150, 243, 0.10)',
+    backgroundColor: "rgba(33, 150, 243, 0.10)",
   },
   sectionTitle: {
     marginBottom: 15,
@@ -638,18 +657,18 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   statLabel: {
     fontSize: 12,
     opacity: 0.7,
     marginTop: 4,
-    color: '#fff',
+    color: "#fff",
   },
   logButton: {
     marginTop: 8,
-    backgroundColor: '#274472',
+    backgroundColor: "#274472",
     borderRadius: 15,
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -663,7 +682,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 15,
     borderRadius: 15,
-    backgroundColor: 'rgba(79, 195, 247, 0.10)',
+    backgroundColor: "rgba(79, 195, 247, 0.10)",
   },
   reminderHeader: {
     flexDirection: "row",
@@ -685,12 +704,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   intervalButton: {
-    backgroundColor: '#4FC3F7',
+    backgroundColor: "#4FC3F7",
     borderRadius: 15,
     width: 30,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   intervalButtonText: {
     color: "white",
@@ -735,7 +754,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ratingButtonActive: {
-    backgroundColor: '#4FC3F7',
+    backgroundColor: "#4FC3F7",
   },
   ratingButtonText: {
     fontWeight: "600",

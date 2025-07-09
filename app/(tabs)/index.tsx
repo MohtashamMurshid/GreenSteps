@@ -1,11 +1,12 @@
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import Badge from "@/components/Badge";
@@ -13,8 +14,8 @@ import { EcoMap } from "@/components/EcoMap";
 import { HealthReminders } from "@/components/HealthReminders";
 import { Leaderboard } from "@/components/Leaderboard";
 import {
-    MultiProgressCircle,
-    ProgressCircle,
+  MultiProgressCircle,
+  ProgressCircle,
 } from "@/components/ProgressCircle";
 import { ProgressDashboard } from "@/components/ProgressDashboard";
 import { RewardAnimation } from "@/components/RewardAnimation";
@@ -23,13 +24,13 @@ import { ThemedView } from "@/components/ThemedView";
 import { usePedometer } from "@/hooks/usePedometer";
 import { audioSystem } from "@/lib/audioSystem";
 import {
-    Achievement,
-    Badge as BadgeType,
-    calculateCO2Saved,
-    getBadgesStatus,
-    getMotivationalMessage,
-    processAchievements,
-    updateDailyProgress,
+  Achievement,
+  Badge as BadgeType,
+  calculateCO2Saved,
+  getBadgesStatus,
+  getMotivationalMessage,
+  processAchievements,
+  updateDailyProgress,
 } from "@/lib/gamification";
 import { getGreenPoints, getStepGoal } from "@/lib/storage";
 
@@ -197,10 +198,7 @@ export default function HomeScreen() {
         onPress={() => setActiveTab("map")}
       >
         <ThemedText
-          style={[
-            styles.tabText,
-            activeTab === "map" && styles.activeTabText,
-          ]}
+          style={[styles.tabText, activeTab === "map" && styles.activeTabText]}
         >
           Routes
         </ThemedText>
@@ -251,7 +249,12 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header Section */}
-        <ThemedView style={[styles.headerContainer, { backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0 }]}>
+        <ThemedView
+          style={[
+            styles.headerContainer,
+            { backgroundColor: "transparent", elevation: 0, shadowOpacity: 0 },
+          ]}
+        >
           <ThemedText type="title" style={styles.title}>
             GreenSteps Dashboard
           </ThemedText>
@@ -287,18 +290,32 @@ export default function HomeScreen() {
           </View>
         </ThemedView>
 
-        {/* Motivational Message */}
+        {/* Motivational Message and Quick Actions */}
         {motivationalMessage ? (
           <ThemedView style={styles.messageSection}>
             <ThemedText style={styles.motivationalText}>
               {motivationalMessage}
             </ThemedText>
-            <ThemedText
-              style={styles.speakButton}
-              onPress={speakMotivationalMessage}
-            >
-              🔊 Hear Coaching
-            </ThemedText>
+            <View style={styles.actionButtonsContainer}>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={speakMotivationalMessage}
+              >
+                <ThemedText style={styles.actionButtonText}>
+                  🔊 Hear Coaching
+                </ThemedText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.runningButton]}
+                onPress={() => router.push("/running")}
+              >
+                <ThemedText
+                  style={[styles.actionButtonText, styles.runningButtonText]}
+                >
+                  🏃‍♀️ Start Running
+                </ThemedText>
+              </TouchableOpacity>
+            </View>
           </ThemedView>
         ) : null}
 
@@ -373,6 +390,34 @@ export default function HomeScreen() {
           )}
         </ThemedView>
 
+        {/* Quick Action Buttons - Always Visible */}
+        <ThemedView style={styles.quickActionsSection}>
+          <ThemedText type="subtitle" style={styles.sectionTitle}>
+            Quick Actions
+          </ThemedText>
+          <View style={styles.quickActionsContainer}>
+            <TouchableOpacity
+              style={[styles.quickActionButton, styles.runningQuickButton]}
+              onPress={() => router.push("/running")}
+            >
+              <ThemedText style={styles.quickActionIcon}>🏃‍♀️</ThemedText>
+              <ThemedText style={styles.quickActionText}>
+                Start Running
+              </ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.quickActionButton, styles.coachingQuickButton]}
+              onPress={speakMotivationalMessage}
+            >
+              <ThemedText style={styles.quickActionIcon}>🔊</ThemedText>
+              <ThemedText style={styles.quickActionText}>
+                Hear Coaching
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+        </ThemedView>
+
         {/* Bottom spacing */}
         <View style={styles.bottomSpacing} />
       </ScrollView>
@@ -425,21 +470,38 @@ export default function HomeScreen() {
   };
 
   return (
-    <LinearGradient colors={['#b2f0ff', '#005fa3']} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
+    <LinearGradient colors={["#b2f0ff", "#005fa3"]} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
         {/* Content */}
         <View style={styles.contentContainer}>{renderContent()}</View>
+        {/* Floating Camera Button */}
+        <TouchableOpacity
+          style={styles.floatingCameraButton}
+          onPress={() => {
+            console.log("📸 Camera button pressed - navigating to /running");
+            try {
+              router.navigate("/running");
+            } catch (error) {
+              console.error("Navigation error:", error);
+              // Fallback
+              router.push("../running");
+            }
+          }}
+        >
+          <ThemedText style={styles.floatingCameraIcon}>📸</ThemedText>
+        </TouchableOpacity>
+
         {/* Bottom Tab Navigation */}
         <View style={styles.bottomTabNavigation}>{renderTabNavigation()}</View>
         {/* Reward Animation Overlay */}
         <RewardAnimation
           visible={showRewardAnimation}
           type={
-            currentAchievement?.type === 'badge'
-              ? 'badge'
-              : currentAchievement?.type === 'goal'
-              ? 'goal'
-              : 'greenpoints'
+            currentAchievement?.type === "badge"
+              ? "badge"
+              : currentAchievement?.type === "goal"
+              ? "goal"
+              : "greenpoints"
           }
           points={currentAchievement?.greenPoints}
           message={currentAchievement?.title}
@@ -453,42 +515,42 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   contentContainer: {
     flex: 1,
   },
   tabNavigation: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   tab: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 10,
     marginHorizontal: 6,
     borderRadius: 22,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     minWidth: 0,
     minHeight: 44,
-    position: 'relative',
+    position: "relative",
   },
   activeTab: {
-    backgroundColor: '#00eaff',
+    backgroundColor: "#00eaff",
     borderRadius: 22,
     paddingHorizontal: 18,
     paddingVertical: 10,
     minWidth: 70,
     minHeight: 36,
     maxWidth: 110,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#00eaff',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#00eaff",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.18,
     shadowRadius: 8,
@@ -496,21 +558,21 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 12,
-    fontWeight: '600',
-    textAlign: 'center',
-    color: '#fff',
+    fontWeight: "600",
+    textAlign: "center",
+    color: "#fff",
     marginLeft: 0,
     opacity: 1,
     flexShrink: 1,
     flexGrow: 1,
-    flexBasis: 'auto',
+    flexBasis: "auto",
     includeFontPadding: false,
-    textAlignVertical: 'center',
+    textAlignVertical: "center",
     maxWidth: 80,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   activeTabText: {
-    color: '#005fa3',
+    color: "#005fa3",
     opacity: 1,
   },
   scrollView: {
@@ -521,41 +583,41 @@ const styles = StyleSheet.create({
     paddingBottom: 80, // Add padding at the bottom for the reward animation
   },
   headerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     elevation: 0,
     shadowOpacity: 0,
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#fff',
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#fff",
   },
   section: {
     marginBottom: 20,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 15,
     padding: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   sectionGradient: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: 15,
   },
   quickStatsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginBottom: 20,
   },
   statCard: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 15,
     borderRadius: 10,
     minWidth: 80,
-    overflow: 'hidden',
-    backgroundColor: 'transparent',
+    overflow: "hidden",
+    backgroundColor: "transparent",
   },
   statCardGradient: {
     ...StyleSheet.absoluteFillObject,
@@ -563,26 +625,26 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   statLabel: {
     fontSize: 12,
     opacity: 0.7,
     marginTop: 4,
-    textAlign: 'center',
-    color: '#b2e0ff',
+    textAlign: "center",
+    color: "#b2e0ff",
   },
   sectionTitle: {
     marginBottom: 15,
-    textAlign: 'center',
-    color: '#fff',
+    textAlign: "center",
+    color: "#fff",
   },
   progressWrapper: {
     padding: 20,
     borderRadius: 15,
-    backgroundColor: 'transparent',
-    overflow: 'hidden',
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
   progressGradient: {
     ...StyleSheet.absoluteFillObject,
@@ -592,9 +654,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     borderRadius: 15,
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    overflow: 'hidden',
+    backgroundColor: "transparent",
+    alignItems: "center",
+    overflow: "hidden",
   },
   messageGradient: {
     ...StyleSheet.absoluteFillObject,
@@ -602,48 +664,137 @@ const styles = StyleSheet.create({
   },
   motivationalText: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 10,
-    fontWeight: '500',
-    color: '#fff',
+    fontWeight: "500",
+    color: "#fff",
   },
   speakButton: {
     fontSize: 14,
-    color: '#00eaff',
+    color: "#00eaff",
     padding: 8,
     borderRadius: 5,
-    backgroundColor: 'rgba(0,234,255,0.2)',
+    backgroundColor: "rgba(0,234,255,0.2)",
+  },
+  actionButtonsContainer: {
+    flexDirection: "row",
+    gap: 15,
+    marginTop: 10,
+    justifyContent: "center",
+    flexWrap: "wrap",
+  },
+  actionButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: "rgba(0,234,255,0.2)",
+    borderWidth: 1,
+    borderColor: "#00eaff",
+  },
+  actionButtonText: {
+    fontSize: 14,
+    color: "#00eaff",
+    fontWeight: "500",
+  },
+  runningButton: {
+    backgroundColor: "rgba(76, 175, 80, 0.2)",
+    borderColor: "#4CAF50",
+  },
+  runningButtonText: {
+    color: "#4CAF50",
+  },
+  quickActionsSection: {
+    marginBottom: 20,
+    backgroundColor: "transparent",
+    borderRadius: 15,
+    padding: 16,
+    overflow: "hidden",
+  },
+  quickActionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    gap: 15,
+  },
+  quickActionButton: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    backgroundColor: "rgba(255,255,255,0.1)",
+    borderWidth: 2,
+    borderColor: "rgba(255,255,255,0.3)",
+  },
+  runningQuickButton: {
+    borderColor: "#4CAF50",
+    backgroundColor: "rgba(76, 175, 80, 0.2)",
+  },
+  coachingQuickButton: {
+    borderColor: "#00eaff",
+    backgroundColor: "rgba(0,234,255,0.2)",
+  },
+  quickActionIcon: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  quickActionText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#fff",
+    textAlign: "center",
+  },
+  floatingCameraButton: {
+    position: "absolute",
+    right: 20,
+    bottom: 120,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#4CAF50",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 8,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowColor: "#000",
+    zIndex: 100,
+  },
+  floatingCameraIcon: {
+    fontSize: 24,
+    color: "#fff",
   },
   stepProgressContent: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   progressContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   goalCompleted: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#00eaff',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#00eaff",
+    textAlign: "center",
     marginTop: 10,
   },
   badgesContent: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   badgesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: 10,
     marginTop: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   unavailableContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
     borderRadius: 15,
-    backgroundColor: 'transparent',
-    overflow: 'hidden',
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
   unavailableGradient: {
     ...StyleSheet.absoluteFillObject,
@@ -651,15 +802,15 @@ const styles = StyleSheet.create({
   },
   unavailableText: {
     fontSize: 16,
-    color: '#00eaff',
-    textAlign: 'center',
+    color: "#00eaff",
+    textAlign: "center",
   },
   noBadgesContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
     borderRadius: 15,
-    backgroundColor: 'transparent',
-    overflow: 'hidden',
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
   noBadgesGradient: {
     ...StyleSheet.absoluteFillObject,
@@ -667,15 +818,15 @@ const styles = StyleSheet.create({
   },
   noBadgesText: {
     fontSize: 16,
-    color: '#00eaff',
-    textAlign: 'center',
+    color: "#00eaff",
+    textAlign: "center",
   },
   loadingContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
     borderRadius: 15,
-    backgroundColor: 'transparent',
-    overflow: 'hidden',
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
   loadingGradient: {
     ...StyleSheet.absoluteFillObject,
@@ -683,8 +834,8 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#00eaff',
-    textAlign: 'center',
+    color: "#00eaff",
+    textAlign: "center",
   },
   bottomSpacing: {
     height: 80,
@@ -694,23 +845,23 @@ const styles = StyleSheet.create({
     width: 290,
     bottom: 0,
     left: 0,
-    position: 'absolute',
+    position: "absolute",
   },
   bottomTabNavigation: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#005fa3',
+    backgroundColor: "#005fa3",
     paddingBottom: 18,
     paddingTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
     zIndex: 10,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.12,
     shadowRadius: 12,

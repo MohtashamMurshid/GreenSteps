@@ -49,8 +49,9 @@ function RootLayoutNav() {
 
   useEffect(() => {
     const inTabsGroup = segments[0] === "(tabs)";
+    const inRunningScreen = segments[0] === "running";
 
-    if (isSignedIn && !inTabsGroup) {
+    if (isSignedIn && !inTabsGroup && !inRunningScreen) {
       router.replace("/(tabs)");
     } else if (!isSignedIn && inTabsGroup) {
       router.replace("/welcome");
@@ -63,6 +64,7 @@ function RootLayoutNav() {
         <Stack.Screen name="welcome" options={{ headerShown: false }} />
         <Stack.Screen name="auth" options={{ title: "Sign Up / Log In" }} />
         <Stack.Screen name="goal" options={{ title: "Set Your Goal" }} />
+        <Stack.Screen name="running" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

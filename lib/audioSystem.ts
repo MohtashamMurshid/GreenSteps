@@ -8,6 +8,8 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
@@ -162,15 +164,16 @@ export class AudioSystem {
 
     if (stepsPerMinute > 100) {
       this.activityLevel = "high";
-      await this.playMotivationalSound("high_activity");
+      // Only play motivational sound if explicitly requested, not automatically
+      console.log("🚀 High activity level detected");
     } else if (stepsPerMinute > 50) {
       this.activityLevel = "moderate";
+      console.log("💪 Moderate activity level detected");
     } else {
       this.activityLevel = "low";
-      // Trigger gentle movement reminder after prolonged inactivity
-      if (stepsPerMinute < 10) {
-        await this.playGentleReminder("idle");
-      }
+      console.log("😴 Low activity level detected");
+      // Remove automatic gentle reminder - this was causing unwanted audio
+      // Gentle reminders should only be triggered explicitly or by scheduled notifications
     }
   }
 

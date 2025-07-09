@@ -9,14 +9,27 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "GreenSteps uses the camera to capture photos and videos during your eco-friendly activities and workouts.",
+        "NSMicrophoneUsageDescription": "GreenSteps uses the microphone to record videos with audio during your activities.",
+        "NSLocationWhenInUseUsageDescription": "GreenSteps uses your location to track your activities and show eco-friendly locations nearby."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +45,22 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow GreenSteps to access your camera to capture photos and videos during activities.",
+          "microphonePermission": "Allow GreenSteps to access your microphone to record videos with audio.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow GreenSteps to access your photo library to save and view activity photos.",
+          "savePhotosPermission": "Allow GreenSteps to save photos from your activities to your device.",
+          "isAccessMediaLocationEnabled": true
         }
       ]
     ],
