@@ -1,4 +1,3 @@
-import { audioSystem } from "@/lib/audioSystem";
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from "react";
 import {
@@ -8,6 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+import { audioSystem } from "@/lib/audioSystem";
+import { getIcon } from "@/lib/icons";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 
@@ -147,7 +149,7 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
       }));
 
       console.log(
-        `💧 Hydration reminder scheduled for ${nextReminderTime.toLocaleTimeString()}`
+        `�� Hydration reminder scheduled for ${nextReminderTime.toLocaleTimeString()}`
       );
     } catch (error) {
       console.error("Failed to schedule hydration reminder:", error);
@@ -403,7 +405,7 @@ export const HealthReminders: React.FC<HealthRemindersProps> = ({
                   {todayStats.activeHours}h
                 </ThemedText>
                 <ThemedText style={styles.statLabel}>
-                  🚶 Active Hours
+                  {getIcon("walk", { size: 14, color: "#26D0CE" })} Active Hours
                 </ThemedText>
               </View>
             </View>

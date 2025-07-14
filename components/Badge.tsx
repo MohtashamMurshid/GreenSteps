@@ -1,6 +1,7 @@
 import { Badge as BadgeType } from "@/lib/gamification";
+import { getIcon } from "@/lib/icons";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 
@@ -13,7 +14,14 @@ export default function Badge({ badge }: BadgeProps) {
     <ThemedView
       style={[styles.container, { opacity: badge.achieved ? 1 : 0.5 }]}
     >
-      <ThemedText style={styles.name}>{badge.name}</ThemedText>
+      <View style={styles.header}>
+        {badge.icon &&
+          getIcon(badge.icon as any, {
+            size: 24,
+            color: badge.achieved ? "#26D0CE" : "#666",
+          })}
+        <ThemedText style={styles.name}>{badge.name}</ThemedText>
+      </View>
       <ThemedText style={styles.description}>{badge.description}</ThemedText>
     </ThemedView>
   );
@@ -25,15 +33,20 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: '#274472',
-    backgroundColor: '#132743',
+    borderColor: "#2D5A5A",
+    backgroundColor: "#4ECDC4",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 4,
   },
   name: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#2D5A5A",
   },
   description: {
-    color: '#fff',
+    color: "#2D5A5A",
   },
 });

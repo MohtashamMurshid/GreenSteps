@@ -1,13 +1,15 @@
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
-    Animated,
-    Dimensions,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  Animated,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
+
+import { getIcon } from "@/lib/icons";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 
@@ -193,11 +195,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1:
-        return "🥇";
+        return getIcon("first", { size: 20, color: "#FFD700" });
       case 2:
-        return "🥈";
+        return getIcon("second", { size: 20, color: "#C0C0C0" });
       case 3:
-        return "🥉";
+        return getIcon("third", { size: 20, color: "#CD7F32" });
       default:
         return `#${rank}`;
     }
@@ -290,7 +292,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               {getRankIcon(user.rank)}
             </ThemedText>
             {user.streak > 0 && (
-              <ThemedText style={styles.streakText}>🔥{user.streak}</ThemedText>
+              <View style={styles.streakContainer}>
+                {getIcon("fire", { size: 16, color: "#FF4500" })}
+                <ThemedText style={styles.streakText}>{user.streak}</ThemedText>
+              </View>
             )}
           </View>
 
@@ -298,10 +303,12 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             <ThemedText style={styles.userName}>{user.name}</ThemedText>
             <View style={styles.statsRow}>
               <ThemedText style={styles.statText}>
-                👟 {user.steps.toLocaleString()}
+                {getIcon("footsteps", { size: 14, color: "#26D0CE" })}{" "}
+                {user.steps.toLocaleString()}
               </ThemedText>
               <ThemedText style={styles.statText}>
-                🌱 {user.greenPoints}
+                {getIcon("leaf", { size: 14, color: "#26D0CE" })}{" "}
+                {user.greenPoints}
               </ThemedText>
               <ThemedText style={styles.statText}>
                 💨 {user.co2Saved}g
@@ -353,10 +360,12 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 
         <View style={styles.challengeFooter}>
           <ThemedText style={styles.participantsText}>
-            👥 {challenge.participants} participants
+            {getIcon("people", { size: 14, color: "#26D0CE" })}{" "}
+            {challenge.participants} participants
           </ThemedText>
           <ThemedText style={styles.rewardText}>
-            🏆 {challenge.reward}
+            {getIcon("trophy", { size: 14, color: "#FFD700" })}{" "}
+            {challenge.reward}
           </ThemedText>
         </View>
       </View>
@@ -364,7 +373,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   };
 
   return (
-    <LinearGradient colors={['#00c6fb', '#0072c6']} style={styles.container}>
+    <LinearGradient colors={["#00c6fb", "#0072c6"]} style={styles.container}>
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
@@ -377,7 +386,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               selectedTab === "rankings" && styles.activeTabText,
             ]}
           >
-            🏆 Rankings
+            {getIcon("trophy", { size: 16, color: "#FFD700" })} Rankings
           </ThemedText>
         </TouchableOpacity>
         <TouchableOpacity
@@ -390,7 +399,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               selectedTab === "challenges" && styles.activeTabText,
             ]}
           >
-            🎯 Challenges
+            {getIcon("target", { size: 16, color: "#26D0CE" })} Challenges
           </ThemedText>
         </TouchableOpacity>
       </View>
@@ -451,7 +460,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: '#fff',
+    color: "#fff",
     marginBottom: 10,
   },
   leaderboardItem: {
@@ -483,6 +492,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
   },
+  streakContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4,
+  },
   userInfo: {
     flex: 1,
   },
@@ -490,7 +504,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
-    color: '#fff',
+    color: "#fff",
   },
   statsRow: {
     flexDirection: "row",
@@ -499,7 +513,7 @@ const styles = StyleSheet.create({
   statText: {
     fontSize: 12,
     opacity: 0.8,
-    color: '#fff',
+    color: "#fff",
   },
   challengeCard: {
     padding: 20,

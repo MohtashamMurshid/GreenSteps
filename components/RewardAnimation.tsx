@@ -1,4 +1,5 @@
-import { LinearGradient } from 'expo-linear-gradient';
+import { getIcon } from "@/lib/icons";
+import { LinearGradient } from "expo-linear-gradient";
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef } from "react";
 import { Animated, Dimensions, StyleSheet, View } from "react-native";
@@ -103,16 +104,16 @@ export const RewardAnimation: React.FC<RewardAnimationProps> = ({
     }
   };
 
-  const getIcon = () => {
+  const getIconComponent = () => {
     switch (type) {
       case "greenpoints":
-        return "🌱";
+        return getIcon("leaf", { size: 50, color: "#4CAF50" });
       case "badge":
-        return "🏆";
+        return getIcon("trophy", { size: 50, color: "#FFD700" });
       case "goal":
-        return "🎯";
+        return getIcon("target", { size: 50, color: "#2196F3" });
       default:
-        return "✨";
+        return getIcon("star", { size: 50, color: "#FFC107" });
     }
   };
 
@@ -147,7 +148,7 @@ export const RewardAnimation: React.FC<RewardAnimationProps> = ({
   if (!visible) return null;
 
   return (
-    <LinearGradient colors={['#162447', '#1f4068']} style={styles.overlay}>
+    <LinearGradient colors={["#162447", "#1f4068"]} style={styles.overlay}>
       <Animated.View
         style={[
           styles.container,
@@ -170,7 +171,9 @@ export const RewardAnimation: React.FC<RewardAnimationProps> = ({
                 speed={1.2}
               />
             ) : (
-              <ThemedText style={styles.iconFallback}>{getIcon()}</ThemedText>
+              <ThemedText style={styles.iconFallback}>
+                {getIconComponent()}
+              </ThemedText>
             )}
           </View>
 
@@ -178,29 +181,38 @@ export const RewardAnimation: React.FC<RewardAnimationProps> = ({
             {getMessage()}
           </ThemedText>
 
+          {/* Icon instead of emoji */}
+          <View style={styles.iconContainer}>{getIconComponent()}</View>
+
           {type === "greenpoints" && (
             <ThemedText style={styles.subtitle}>
-              Keep it up! Every step counts! 🌍
+              Keep it up! Every step counts!
             </ThemedText>
           )}
 
           {type === "badge" && (
             <ThemedText style={styles.subtitle}>
-              You&apos;re making a difference! 🌟
+              You&apos;re making a difference!
             </ThemedText>
           )}
 
           {type === "goal" && (
             <ThemedText style={styles.subtitle}>
-              Amazing achievement! 🎉
+              Amazing achievement!
             </ThemedText>
           )}
 
-          {/* Particle effect overlay */}
+          {/* Particle effect overlay with icons */}
           <View style={styles.particleOverlay}>
-            <ThemedText style={styles.particle}>✨</ThemedText>
-            <ThemedText style={styles.particle}>🌟</ThemedText>
-            <ThemedText style={styles.particle}>💫</ThemedText>
+            <View style={[styles.particle, { top: "20%", left: "20%" }]}>
+              {getIcon("star", { size: 20, color: "#FFC107" })}
+            </View>
+            <View style={[styles.particle, { top: "30%", right: "20%" }]}>
+              {getIcon("star", { size: 16, color: "#4CAF50" })}
+            </View>
+            <View style={[styles.particle, { bottom: "25%", left: "15%" }]}>
+              {getIcon("star", { size: 18, color: "#2196F3" })}
+            </View>
           </View>
         </ThemedView>
       </Animated.View>
@@ -238,13 +250,13 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   greenpointsContent: {
-    backgroundColor: '#1976D2', // blue
+    backgroundColor: "#1976D2", // blue
   },
   badgeContent: {
-    backgroundColor: '#1565C0', // blue
+    backgroundColor: "#1565C0", // blue
   },
   goalContent: {
-    backgroundColor: '#4FC3F7', // blue accent
+    backgroundColor: "#4FC3F7", // blue accent
   },
   lottieContainer: {
     position: "relative",
@@ -289,5 +301,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     fontSize: 20,
     color: "rgba(255, 255, 255, 0.8)",
+  },
+  iconContainer: {
+    marginBottom: 10,
   },
 });

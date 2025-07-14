@@ -1,12 +1,13 @@
+import { getIcon } from "@/lib/icons";
 import { DailyStats, getDailyStats, getGreenPoints } from "@/lib/storage";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import {
-    BarChart,
-    LineChart,
-    PieChart,
-    ProgressChart,
+  BarChart,
+  LineChart,
+  PieChart,
+  ProgressChart,
 } from "react-native-chart-kit";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -209,10 +210,23 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
   return (
     <ScrollView style={styles.container}>
       {/* Enhanced Stats Summary */}
-      <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
-        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
+      <LinearGradient
+        colors={["#0072c6", "#001f3f"]}
+        style={styles.sectionGradient}
+      >
+        <ThemedView
+          style={[
+            styles.section,
+            {
+              backgroundColor: "transparent",
+              shadowColor: "transparent",
+              elevation: 0,
+            },
+          ]}
+        >
           <ThemedText type="subtitle" style={styles.sectionTitle}>
-            📊 Today&apos;s Progress
+            {getIcon("stats", { size: 18, color: "#26D0CE" })} Today&apos;s
+            Progress
           </ThemedText>
 
           <View style={styles.statsRow}>
@@ -235,19 +249,26 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
               <ThemedText style={styles.statNumber}>
                 {totalGreenPoints}
               </ThemedText>
-              <ThemedText style={styles.statLabel}>🌱 GreenPoints</ThemedText>
+              <ThemedText style={styles.statLabel}>
+                {getIcon("leaf", { size: 14, color: "#26D0CE" })} GreenPoints
+              </ThemedText>
             </View>
 
             <View style={styles.statItem}>
-              <ThemedText style={styles.statNumber}>{todayCO2Saved}g</ThemedText>
+              <ThemedText style={styles.statNumber}>
+                {todayCO2Saved}g
+              </ThemedText>
               <ThemedText style={styles.statLabel}>CO₂ Saved</ThemedText>
             </View>
           </View>
 
           {/* Daily Goal Pie Chart */}
           <View style={styles.chartContainer}>
-            <ThemedText style={styles.chartTitle}>Daily Goal Progress</ThemedText>
-            {pieChartData[0].population > 0 || pieChartData[1].population > 0 ? (
+            <ThemedText style={styles.chartTitle}>
+              Daily Goal Progress
+            </ThemedText>
+            {pieChartData[0].population > 0 ||
+            pieChartData[1].population > 0 ? (
               <PieChart
                 data={pieChartData}
                 width={width - 80}
@@ -267,10 +288,23 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       </LinearGradient>
 
       {/* Weekly Bar Chart */}
-      <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
-        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
+      <LinearGradient
+        colors={["#0072c6", "#001f3f"]}
+        style={styles.sectionGradient}
+      >
+        <ThemedView
+          style={[
+            styles.section,
+            {
+              backgroundColor: "transparent",
+              shadowColor: "transparent",
+              elevation: 0,
+            },
+          ]}
+        >
           <ThemedText type="subtitle" style={styles.sectionTitle}>
-            📈 Weekly Steps Comparison
+            {getIcon("trending", { size: 18, color: "#26D0CE" })} Weekly Steps
+            Comparison
           </ThemedText>
 
           {weeklyData.length > 0 && weeklyData.some((d) => d.steps > 0) && (
@@ -290,7 +324,8 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
                 style={styles.chart}
               />
               <ThemedText style={styles.chartNote}>
-                Weekly Average: {Math.round(weeklyAverage).toLocaleString()} steps
+                Weekly Average: {Math.round(weeklyAverage).toLocaleString()}{" "}
+                steps
               </ThemedText>
             </View>
           )}
@@ -300,7 +335,8 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       {/* Monthly Trend Line Chart */}
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle" style={styles.sectionTitle}>
-          📊 Monthly Activity Trend
+          {getIcon("growth", { size: 18, color: "#26D0CE" })} Monthly Activity
+          Trend
         </ThemedText>
 
         {monthlyData.length > 0 && monthlyData.some((d) => d.steps > 0) && (
@@ -340,7 +376,7 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
       {/* Progress Overview */}
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle" style={styles.sectionTitle}>
-          📊 Progress Overview
+          {getIcon("chart", { size: 18, color: "#26D0CE" })} Progress Overview
         </ThemedText>
         {weeklyData.length > 0 && (
           <ProgressChart
@@ -356,8 +392,20 @@ export const ProgressDashboard: React.FC<ProgressDashboardProps> = ({
         )}
       </ThemedView>
 
-      <LinearGradient colors={['#0072c6', '#001f3f']} style={styles.sectionGradient}>
-        <ThemedView style={[styles.section, { backgroundColor: 'transparent', shadowColor: 'transparent', elevation: 0 }]}>
+      <LinearGradient
+        colors={["#0072c6", "#001f3f"]}
+        style={styles.sectionGradient}
+      >
+        <ThemedView
+          style={[
+            styles.section,
+            {
+              backgroundColor: "transparent",
+              shadowColor: "transparent",
+              elevation: 0,
+            },
+          ]}
+        >
           <ThemedText type="subtitle" style={styles.sectionTitle}>
             Environmental Impact
           </ThemedText>
@@ -395,8 +443,8 @@ const styles = StyleSheet.create({
     margin: 20,
     padding: 20,
     borderRadius: 15,
-    backgroundColor: '#132743',
-    shadowColor: '#000',
+    backgroundColor: "#132743",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -418,8 +466,8 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#4FC3F7',
+    fontWeight: "bold",
+    color: "#4FC3F7",
   },
   statLabel: {
     fontSize: 12,
@@ -429,14 +477,14 @@ const styles = StyleSheet.create({
   progressBar: {
     width: 60,
     height: 4,
-    backgroundColor: '#274472',
+    backgroundColor: "#274472",
     borderRadius: 2,
     marginTop: 8,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   progressFill: {
-    height: '100%',
-    backgroundColor: '#4FC3F7',
+    height: "100%",
+    backgroundColor: "#4FC3F7",
     borderRadius: 2,
   },
   chartContainer: {
@@ -450,10 +498,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   pieChartNote: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 14,
-    fontWeight: '600',
-    color: '#4FC3F7',
+    fontWeight: "600",
+    color: "#4FC3F7",
     marginTop: -20,
   },
   chart: {
@@ -469,7 +517,7 @@ const styles = StyleSheet.create({
   sectionGradient: {
     borderRadius: 20,
     margin: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
     shadowRadius: 8,

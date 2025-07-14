@@ -90,9 +90,9 @@ export class AudioSystem {
 
       // For demo, we'll use Speech with musical notes
       const soundMessages = {
-        steps: "🎵 Ding! Step milestone reached!",
-        badge: "🎵 Ta-da! New badge earned!",
-        goal: "🎵 Fanfare! Goal completed!",
+        steps: "Ding! Step milestone reached!",
+        badge: "Ta-da! New badge earned!",
+        goal: "Fanfare! Goal completed!",
       };
 
       // Play a brief celebratory message
@@ -101,7 +101,7 @@ export class AudioSystem {
         pitch: 1.1,
       });
 
-      console.log(`🎵 ${type} achievement sound played`);
+      console.log(`${type} achievement sound played`);
     } catch (error) {
       console.error("Failed to play achievement sound:", error);
     }
@@ -122,7 +122,7 @@ export class AudioSystem {
       }
 
       const reminderSounds = {
-        idle: "🔔 Gentle chime - time to move!",
+        idle: "Gentle chime - time to move!",
         hydration: "💧 Soft bell - hydration reminder",
         sleep: "😴 Calming tone - wind down time",
       };
@@ -168,7 +168,7 @@ export class AudioSystem {
       console.log("🚀 High activity level detected");
     } else if (stepsPerMinute > 50) {
       this.activityLevel = "moderate";
-      console.log("💪 Moderate activity level detected");
+      console.log("Moderate activity level detected");
     } else {
       this.activityLevel = "low";
       console.log("😴 Low activity level detected");
@@ -184,8 +184,8 @@ export class AudioSystem {
     try {
       const motivationalMessages = {
         high_activity: "🚀 You're on fire! Great pace!",
-        streak: "🔥 Amazing streak! Keep it going!",
-        comeback: "💪 Great comeback! Every step counts!",
+        streak: "Amazing streak! Keep it going!",
+        comeback: "Great comeback! Every step counts!",
       };
 
       await this.speakCoachingMessage(motivationalMessages[activityType], {
@@ -213,9 +213,9 @@ export class AudioSystem {
       await this.playAmbientSound("stop");
 
       const ambientMessages = {
-        nature: "🌿 Playing nature sounds for your walk...",
-        focus: "🧠 Focus sounds activated for productive activity...",
-        calm: "🧘 Calming sounds for relaxation...",
+        nature: "Playing nature sounds for your walk...",
+        focus: "Focus mode sounds for concentration...",
+        calm: "Calming sounds for relaxation...",
       };
 
       console.log(ambientMessages[type]);
@@ -317,13 +317,13 @@ export class AudioSystem {
 
       const messages = {
         idle: {
-          title: "Time to Move! 🚶‍♂️",
+          title: "Time to Move!",
           body:
             customMessage ||
             "You've been inactive for a while. A quick walk can boost your energy and help the environment!",
         },
         hydration: {
-          title: "Stay Hydrated! 💧",
+          title: "Stay Hydrated!",
           body:
             customMessage ||
             "Don't forget to drink water. Your body needs it after all that activity!",

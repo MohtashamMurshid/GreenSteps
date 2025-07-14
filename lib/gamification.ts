@@ -22,7 +22,7 @@ const allBadges: Badge[] = [
     name: "First Steps",
     description: "Take your first 100 steps with GreenSteps.",
     achieved: false,
-    icon: "👶",
+    icon: "baby",
     greenPointsReward: 10,
   },
   {
@@ -30,7 +30,7 @@ const allBadges: Badge[] = [
     name: "1,000 Steps",
     description: "Walk 1,000 steps in a day.",
     achieved: false,
-    icon: "🚶",
+    icon: "walk",
     greenPointsReward: 25,
   },
   {
@@ -38,7 +38,7 @@ const allBadges: Badge[] = [
     name: "5,000 Steps",
     description: "Walk 5,000 steps in a day.",
     achieved: false,
-    icon: "🏃",
+    icon: "runner",
     greenPointsReward: 50,
   },
   {
@@ -46,7 +46,7 @@ const allBadges: Badge[] = [
     name: "10,000 Steps",
     description: "Walk 10,000 steps in a day.",
     achieved: false,
-    icon: "💪",
+    icon: "strong",
     greenPointsReward: 100,
   },
   {
@@ -54,7 +54,7 @@ const allBadges: Badge[] = [
     name: "Eco Warrior",
     description: "Save 500g of CO₂ in a single day.",
     achieved: false,
-    icon: "🌍",
+    icon: "earth",
     greenPointsReward: 75,
   },
   {
@@ -62,7 +62,7 @@ const allBadges: Badge[] = [
     name: "Week Streak",
     description: "Reach your daily goal for 7 consecutive days.",
     achieved: false,
-    icon: "🔥",
+    icon: "fire",
     greenPointsReward: 200,
   },
   {
@@ -70,7 +70,7 @@ const allBadges: Badge[] = [
     name: "Green Champion",
     description: "Earn 1,000 GreenPoints total.",
     achieved: false,
-    icon: "🏆",
+    icon: "trophy",
     greenPointsReward: 250,
   },
 ];
@@ -212,15 +212,15 @@ export const getMotivationalMessage = (
   const progress = stepCount / goal;
 
   if (progress >= 1.0) {
-    return "🎉 Goal crushed! You're an eco-champion today!";
+    return "Goal crushed! You're an eco-champion today!";
   } else if (progress >= 0.8) {
-    return "🔥 So close! Every step counts for our planet!";
+    return "So close! Every step counts for our planet!";
   } else if (progress >= 0.5) {
-    return "💪 Halfway there! Keep making a difference!";
+    return "Halfway there! Keep making a difference!";
   } else if (progress >= 0.25) {
-    return "🌱 Great start! Small steps, big impact!";
+    return "Great start! Small steps, big impact!";
   } else {
-    return "🚀 Ready to start your green journey?";
+    return "Ready to start your green journey?";
   }
 };
 

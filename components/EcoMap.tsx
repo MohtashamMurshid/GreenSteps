@@ -1,19 +1,20 @@
-import { LinearGradient } from 'expo-linear-gradient';
+import { getIcon } from "@/lib/icons";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
-    Alert,
-    Dimensions,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  Alert,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import MapView, {
-    Callout,
-    LatLng,
-    Marker,
-    Polyline,
-    Region,
+  Callout,
+  LatLng,
+  Marker,
+  Polyline,
+  Region,
 } from "react-native-maps";
 import { ThemedText } from "./ThemedText";
 
@@ -63,7 +64,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
       title: "Eco Charging Station",
       description: "Electric vehicle charging point",
       type: "charging",
-      icon: "⚡",
+      icon: "bolt",
     },
     {
       id: "2",
@@ -71,7 +72,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
       title: "Bike Share Station",
       description: "Sustainable transport hub",
       type: "bike",
-      icon: "🚲",
+      icon: "fitness",
     },
     {
       id: "3",
@@ -79,7 +80,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
       title: "Green Park",
       description: "Perfect for eco-friendly walks",
       type: "park",
-      icon: "🌳",
+      icon: "tree",
     },
     {
       id: "4",
@@ -87,7 +88,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
       title: "Recycling Center",
       description: "Drop off recyclables here",
       type: "recycling",
-      icon: "♻️",
+      icon: "recycle",
     },
   ]);
 
@@ -280,7 +281,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
   };
 
   return (
-    <LinearGradient colors={['#162447', '#1f4068']} style={styles.container}>
+    <LinearGradient colors={["#2D5A5A", "#1A4040"]} style={styles.container}>
       {/* Map Controls */}
       <View style={styles.controlsContainer}>
         <TouchableOpacity
@@ -288,13 +289,21 @@ export const EcoMap: React.FC<EcoMapProps> = ({
           onPress={isTracking ? stopTracking : startTracking}
           disabled={!trackingEnabled}
         >
-          <ThemedText style={styles.controlButtonText}>
-            {isTracking ? "⏹️ Stop" : "▶️ Start"}
-          </ThemedText>
+          <View style={styles.controlIconContainer}>
+            {isTracking
+              ? getIcon("run", { size: 16, color: "#fff" })
+              : getIcon("walk", { size: 16, color: "#fff" })}
+            <ThemedText style={styles.controlButtonText}>
+              {isTracking ? "Stop" : "Start"}
+            </ThemedText>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.controlButton} onPress={clearPath}>
-          <ThemedText style={styles.controlButtonText}>🗑️ Clear</ThemedText>
+          <View style={styles.controlIconContainer}>
+            {getIcon("recycle", { size: 16, color: "#fff" })}
+            <ThemedText style={styles.controlButtonText}>Clear</ThemedText>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -303,9 +312,14 @@ export const EcoMap: React.FC<EcoMapProps> = ({
             setMapType(mapType === "standard" ? "satellite" : "standard")
           }
         >
-          <ThemedText style={styles.controlButtonText}>
-            {mapType === "standard" ? "🛰️" : "🗺️"}
-          </ThemedText>
+          <View style={styles.controlIconContainer}>
+            {mapType === "standard"
+              ? getIcon("satellite", { size: 16, color: "#fff" })
+              : getIcon("map", { size: 16, color: "#fff" })}
+            <ThemedText style={styles.controlButtonText}>
+              {mapType === "standard" ? "Satellite" : "Standard"}
+            </ThemedText>
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -362,7 +376,9 @@ export const EcoMap: React.FC<EcoMapProps> = ({
             description={location.description}
           >
             <View style={styles.customMarker}>
-              <ThemedText style={styles.markerIcon}>{location.icon}</ThemedText>
+              <ThemedText style={styles.markerIcon}>
+                {getIcon(location.icon as any, { size: 20 })}
+              </ThemedText>
             </View>
             <Callout>
               <View style={styles.calloutContainer}>
@@ -381,7 +397,9 @@ export const EcoMap: React.FC<EcoMapProps> = ({
       {/* Stats Panel */}
       {showEcoStats && pathPoints.length > 0 && (
         <View style={styles.statsPanel}>
-          <ThemedText style={styles.statsTitle}>🌱 Journey Stats</ThemedText>
+          <ThemedText style={styles.statsTitle}>
+            {getIcon("leaf", { size: 16, color: "#26D0CE" })} Journey Stats
+          </ThemedText>
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
               <ThemedText style={styles.statValue}>
@@ -405,9 +423,12 @@ export const EcoMap: React.FC<EcoMapProps> = ({
           <ThemedText style={styles.activityIndicator}>
             Current:{" "}
             {pathPoints[pathPoints.length - 1]?.activity || "stationary"}
-            {getPathColor() === "#4CAF50" && " 🚶"}
-            {getPathColor() === "#FF9800" && " 🏃"}
-            {getPathColor() === "#2196F3" && " 🚲"}
+            {getPathColor() === "#4CAF50" &&
+              getIcon("walk", { size: 16, color: "#4CAF50" })}
+            {getPathColor() === "#FF9800" &&
+              getIcon("runner", { size: 16, color: "#FF9800" })}
+            {getPathColor() === "#2196F3" &&
+              getIcon("fitness", { size: 16, color: "#2196F3" })}
           </ThemedText>
         </View>
       )}
@@ -429,18 +450,18 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   controlButton: {
-    backgroundColor: 'rgba(33, 150, 243, 0.9)',
+    backgroundColor: "rgba(33, 150, 243, 0.9)",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
   trackingButton: {
-    backgroundColor: 'rgba(79, 195, 247, 0.9)',
+    backgroundColor: "rgba(79, 195, 247, 0.9)",
   },
   controlButtonText: {
     color: "white",
@@ -508,19 +529,24 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   statLabel: {
     fontSize: 10,
     opacity: 0.7,
     marginTop: 2,
-    color: '#fff',
+    color: "#fff",
   },
   activityIndicator: {
     textAlign: "center",
     fontSize: 12,
     fontWeight: "600",
     color: "#FF9800",
+  },
+  controlIconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

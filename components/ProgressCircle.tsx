@@ -1,3 +1,4 @@
+import { getIcon } from "@/lib/icons";
 import React, { useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import Svg, { Circle, G } from "react-native-svg";
@@ -20,8 +21,8 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   progress,
   size = 120,
   strokeWidth = 8,
-  color = '#4FC3F7',
-  backgroundColor = '#274472',
+  color = "#4FC3F7",
+  backgroundColor = "#274472",
   title,
   subtitle,
   showPercentage = false,
@@ -166,16 +167,16 @@ export const AchievementCircle: React.FC<AchievementCircleProps> = ({
     outputRange: ["0deg", "360deg"],
   });
 
-  const getIcon = () => {
+  const getIconComponent = () => {
     switch (type) {
       case "goal":
-        return "🎯";
+        return getIcon("target", { size: 40, color: getColor() });
       case "badge":
-        return "🏆";
+        return getIcon("trophy", { size: 40, color: getColor() });
       case "milestone":
-        return "⭐";
+        return getIcon("star", { size: 40, color: getColor() });
       default:
-        return "✨";
+        return getIcon("star", { size: 40, color: getColor() });
     }
   };
 
@@ -214,7 +215,9 @@ export const AchievementCircle: React.FC<AchievementCircleProps> = ({
           },
         ]}
       >
-        <ThemedText style={styles.achievementIcon}>{getIcon()}</ThemedText>
+        <View style={[styles.achievementContent, { opacity: visible ? 1 : 0 }]}>
+          {getIconComponent()}
+        </View>
       </Animated.View>
     </Animated.View>
   );
@@ -236,22 +239,22 @@ const styles = StyleSheet.create({
   },
   percentage: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   title: {
     fontSize: 14,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
     marginTop: 2,
-    color: '#fff',
+    color: "#fff",
   },
   subtitle: {
     fontSize: 10,
     opacity: 0.7,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 1,
-    color: '#fff',
+    color: "#fff",
   },
   multiContainer: {
     flexDirection: "row",
@@ -280,6 +283,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 8,
+  },
+  achievementContent: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   achievementIcon: {
     fontSize: 40,

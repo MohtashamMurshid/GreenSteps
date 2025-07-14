@@ -1,22 +1,17 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { Colors } from "@/constants/Colors";
+import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { View } from "react-native";
 import "react-native-reanimated";
-
-import { useColorScheme } from "@/hooks/useColorScheme";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -39,12 +34,8 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
   const router = useRouter();
   const segments = useSegments();
-
-  // Here you can add logic to check if the user is signed in
-  // For now, we'll assume they are not.
   const isSignedIn = true;
 
   useEffect(() => {
@@ -58,17 +49,30 @@ function RootLayoutNav() {
     }
   }, [isSignedIn, segments, router]);
 
+  const CustomDarkTheme = {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      background: Colors.dark.black,
+      card: Colors.dark.card,
+      text: Colors.dark.text,
+      primary: Colors.dark.primary,
+    },
+  };
+
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="welcome" options={{ headerShown: false }} />
-        <Stack.Screen name="auth" options={{ title: "Sign Up / Log In" }} />
-        <Stack.Screen name="goal" options={{ title: "Set Your Goal" }} />
-        <Stack.Screen name="running" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider value={CustomDarkTheme}>
+      <View style={{ flex: 1, backgroundColor: Colors.dark.black }}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="welcome" />
+          <Stack.Screen name="auth" options={{ title: "Sign Up / Log In" }} />
+          <Stack.Screen name="goal" options={{ title: "Set Your Goal" }} />
+          <Stack.Screen name="running" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="light" />
+      </View>
     </ThemeProvider>
   );
 }
