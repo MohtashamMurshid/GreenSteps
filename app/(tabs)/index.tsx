@@ -1,9 +1,7 @@
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import { BlurView } from "expo-blur";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,7 +9,6 @@ import {
   View,
 } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { audioSystem } from "@/lib/audioSystem";
 
@@ -21,18 +18,14 @@ const InfoCard = ({
 }: {
   children: React.ReactNode;
   style?: any;
-}) => (
-  <BlurView intensity={30} tint="dark" style={[styles.card, style]}>
-    {children}
-  </BlurView>
-);
+}) => <View style={[styles.card, style]}>{children}</View>;
 
 const DailyRewardsCard = () => (
   <InfoCard>
     <View style={styles.cardContent}>
       <View>
-        <ThemedText style={styles.cardTitle}>Daily Rewards</ThemedText>
-        <ThemedText style={styles.cardSubtitle}>Earn points</ThemedText>
+        <Text style={styles.cardTitle}>Daily Rewards</Text>
+        <Text style={styles.cardSubtitle}>Earn points</Text>
       </View>
       <TouchableOpacity style={styles.claimButton}>
         <MaterialIcons name="play-arrow" size={16} color="white" />
@@ -45,9 +38,7 @@ const DailyRewardsCard = () => (
 const InviteCard = () => (
   <InfoCard>
     <View style={styles.cardContent}>
-      <ThemedText style={styles.cardTitle}>
-        Invite a friend, get 5 points !
-      </ThemedText>
+      <Text style={styles.cardTitle}>Inivte a friend, get 5 points !</Text>
       <TouchableOpacity style={styles.getButton}>
         <Text style={styles.getButtonText}>Get</Text>
         <FontAwesome5
@@ -70,9 +61,9 @@ const BoostCard = () => {
   return (
     <InfoCard>
       <View style={styles.cardContent}>
-        <ThemedText style={styles.cardTitle}>
+        <Text style={styles.cardTitle}>
           Boost 2x <FontAwesome5 name="rocket" size={16} color="#FF9500" />
-        </ThemedText>
+        </Text>
         <TouchableOpacity style={styles.claimButton} onPress={handlePress}>
           <MaterialIcons name="play-arrow" size={16} color="white" />
           <Text style={styles.claimButtonText}>Claim</Text>
@@ -82,44 +73,60 @@ const BoostCard = () => {
   );
 };
 
+const StartRunningButton = () => {
+  const handleStartRunning = () => {
+    router.push("/running");
+  };
+
+  return (
+    <TouchableOpacity
+      style={styles.startRunningButton}
+      onPress={handleStartRunning}
+    >
+      <FontAwesome5 name="play" size={20} color="black" />
+      <Text style={styles.startRunningText}>Start Running</Text>
+    </TouchableOpacity>
+  );
+};
+
 export default function HomeScreen() {
   const [greenPoints, setGreenPoints] = useState(1230);
+  const [stepsToday, setStepsToday] = useState(8432);
 
   useEffect(() => {
     audioSystem.initialize();
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <FontAwesome5 name="walking" size={28} color={Colors.dark.text} />
           <View style={styles.pointsContainer}>
-            <ThemedText style={styles.pointsText}>Points</ThemedText>
-            <FontAwesome5 name="coins" size={16} color="gold" />
-            <ThemedText style={styles.pointsValue}>{greenPoints}</ThemedText>
+            <Text style={styles.pointsText}>Points</Text>
+            <FontAwesome5 name="filter" size={16} color={Colors.dark.text} />
+            <Text style={styles.pointsValue}>{greenPoints}</Text>
           </View>
         </View>
 
         <View style={styles.stepsContainer}>
-          <ThemedText style={styles.stepsCount}>- - -</ThemedText>
-          <ThemedText style={styles.stepsToday}>STEPS TODAY</ThemedText>
+          <Text style={styles.stepsCount}>{stepsToday.toLocaleString()}</Text>
+          <Text style={styles.stepsToday}>steps today</Text>
         </View>
+
+        <StartRunningButton />
 
         <InviteCard />
         <DailyRewardsCard />
         <BoostCard />
       </ScrollView>
       <View style={styles.cyclingTab}>
-        <Text style={styles.cyclingTabText}>CYCLING</Text>
+        <Text style={styles.cyclingTabText}>{"<<"}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.cameraButton}
-        onPress={() => router.push("/running")}
-      >
-        <MaterialIcons name="photo-camera" size={32} color="white" />
-      </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -130,52 +137,51 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 24,
-    paddingTop: 20,
+    paddingTop: 80,
     paddingBottom: 150,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 20,
   },
   pointsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 6,
   },
   pointsText: {
-    fontSize: 18,
-    color: Colors.dark.gray,
+    fontSize: 16,
+    color: "#888888",
   },
   pointsValue: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: Colors.dark.text,
+    color: "#FFFFFF",
   },
   stepsContainer: {
     alignItems: "center",
-    marginBottom: 50,
+    marginTop: 100,
+    marginBottom: 80,
   },
   stepsCount: {
     fontSize: 88,
-    fontWeight: "200",
-    color: Colors.dark.text,
-    letterSpacing: 4,
+    fontWeight: "300",
+    color: "#FFFFFF",
+    letterSpacing: 2,
+    textAlign: "center",
   },
   stepsToday: {
     fontSize: 16,
-    color: Colors.dark.gray,
+    color: "#888888",
     marginTop: 10,
-    textTransform: "uppercase",
     letterSpacing: 2,
+    textAlign: "center",
   },
   card: {
-    borderRadius: 22,
-    overflow: "hidden",
     marginBottom: 16,
     padding: 22,
-    backgroundColor: "rgba(30, 30, 30, 0.5)",
   },
   cardContent: {
     flexDirection: "row",
@@ -186,11 +192,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: Colors.dark.text,
+    color: "#FFFFFF",
   },
   cardSubtitle: {
     fontSize: 16,
-    color: Colors.dark.gray,
+    color: "#888888",
     marginTop: 4,
   },
   claimButton: {
@@ -221,35 +227,41 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  startRunningButton: {
+    backgroundColor: "#00FFA3",
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 40,
+    marginBottom: 40,
+    alignSelf: "center",
+    minWidth: 200,
+  },
+  startRunningText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
   cyclingTab: {
     position: "absolute",
-    left: -30,
+    left: -20,
     top: "28%",
     backgroundColor: Colors.dark.cardOpaque,
     transform: [{ rotate: "-90deg" }],
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
+    alignItems: "center",
   },
   cyclingTabText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
-    letterSpacing: 1,
-    textTransform: "uppercase",
-  },
-  cameraButton: {
-    position: "absolute",
-    bottom: 100,
-    alignSelf: "center",
-    backgroundColor: "black",
-    borderRadius: 40,
-    width: 70,
-    height: 70,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 8,
-    borderWidth: 3,
-    borderColor: "rgba(255,255,255,0.2)",
+    letterSpacing: -2,
   },
 });

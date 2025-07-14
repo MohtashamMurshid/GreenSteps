@@ -5,11 +5,11 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 
 interface VoucherCardProps {
@@ -27,18 +27,18 @@ const VoucherCard = ({
 }: VoucherCardProps) => (
   <LinearGradient colors={gradientColors} style={styles.card}>
     <View style={styles.cardHeader}>
-      <ThemedText style={styles.cardTitle}>{title}</ThemedText>
+      <Text style={styles.cardTitle}>{title}</Text>
       <FontAwesome5 name={iconName} size={30} color="white" />
     </View>
     <TouchableOpacity style={styles.claimButton}>
-      <ThemedText style={styles.claimButtonText}>Claim</ThemedText>
+      <Text style={styles.claimButtonText}>Claim</Text>
       <FontAwesome5
         name="coins"
         size={12}
         color="yellow"
         style={{ marginLeft: 5 }}
       />
-      <ThemedText style={styles.claimButtonText}> {cost}</ThemedText>
+      <Text style={styles.claimButtonText}> {cost}</Text>
     </TouchableOpacity>
   </LinearGradient>
 );
@@ -77,10 +77,10 @@ export default function VouchersScreen() {
         <View style={styles.header}>
           <FontAwesome5 name="percentage" size={32} color="white" />
           <TouchableOpacity style={styles.shopButton}>
-            <ThemedText style={styles.shopButtonText}>Shop</ThemedText>
+            <Text style={styles.shopButtonText}>Shop</Text>
           </TouchableOpacity>
         </View>
-        <ThemedText style={styles.pointsText}>Points: 1230</ThemedText>
+        <Text style={styles.pointsText}>Points: 1230</Text>
 
         {vouchers.map((voucher, index) => (
           <VoucherCard key={index} {...voucher} />

@@ -1,4 +1,5 @@
 import { getIcon } from "@/lib/icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
@@ -6,6 +7,8 @@ import {
   Alert,
   Dimensions,
   StyleSheet,
+  Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -55,6 +58,7 @@ export const EcoMap: React.FC<EcoMapProps> = ({
     useState<Location.LocationSubscription | null>(null);
   const [mapType, setMapType] = useState<"standard" | "satellite">("standard");
   const [showTrafficLayer, setShowTrafficLayer] = useState(false);
+  const [search, setSearch] = useState("");
 
   // Mock eco-friendly locations
   const [ecoLocations] = useState([
@@ -282,7 +286,33 @@ export const EcoMap: React.FC<EcoMapProps> = ({
 
   return (
     <LinearGradient colors={["#2D5A5A", "#1A4040"]} style={styles.container}>
-      {/* Map Controls */}
+      {/* Custom Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerIcon}>
+          <FontAwesome5 name="arrow-left" size={22} color="#fff" />
+        </TouchableOpacity>
+        <View style={styles.headerTextBox}>
+          <Text style={styles.headerTitle}>NextStep AI</Text>
+          <Text style={styles.headerSubtitle}>Navigator</Text>
+        </View>
+      </View>
+      {/* Search Bar */}
+      <View style={styles.searchBarContainer}>
+        <FontAwesome5
+          name="search"
+          size={16}
+          color="#bbb"
+          style={{ marginLeft: 12 }}
+        />
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Type in your location"
+          placeholderTextColor="#bbb"
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
+      {/* Map Controls (move to bottom if needed) */}
       <View style={styles.controlsContainer}>
         <TouchableOpacity
           style={[styles.controlButton, isTracking && styles.trackingButton]}
@@ -439,6 +469,71 @@ export const EcoMap: React.FC<EcoMapProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "transparent",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(20,20,25,0.97)",
+    paddingTop: 44, // for notch
+    paddingBottom: 10,
+    paddingHorizontal: 18,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    zIndex: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.18,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  headerIcon: {
+    marginRight: 14,
+    padding: 4,
+  },
+  headerTextBox: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  headerTitle: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
+    letterSpacing: 0.2,
+  },
+  headerSubtitle: {
+    color: "#bbb",
+    fontSize: 13,
+    marginTop: 1,
+  },
+  headerIconsRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 10,
+  },
+  searchBarContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#23272F",
+    borderRadius: 20,
+    marginHorizontal: 18,
+    marginTop: 8,
+    marginBottom: 12,
+    height: 42,
+    zIndex: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+    elevation: 6,
+  },
+  searchBar: {
+    flex: 1,
+    color: "#fff",
+    fontSize: 16,
+    paddingHorizontal: 12,
+    height: 42,
+    backgroundColor: "transparent",
   },
   controlsContainer: {
     position: "absolute",
@@ -469,8 +564,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   map: {
-    width: width,
-    height: height * 0.7,
+    flex: 1,
+    width: "100%",
+    marginTop: 0,
   },
   customMarker: {
     backgroundColor: "white",
