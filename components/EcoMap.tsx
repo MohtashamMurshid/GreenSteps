@@ -5,7 +5,6 @@ import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  Dimensions,
   StyleSheet,
   Text,
   TextInput,
@@ -20,8 +19,6 @@ import MapView, {
   Region,
 } from "react-native-maps";
 import { ThemedText } from "./ThemedText";
-
-const { width, height } = Dimensions.get("window");
 
 interface PathPoint {
   latitude: number;
